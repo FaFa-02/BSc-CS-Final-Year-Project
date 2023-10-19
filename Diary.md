@@ -5,7 +5,7 @@ Inital supervisor meeting to discuss project and background information on struc
 
 Objectives set:
 	-Need 3 datasets: Small, medium, and large, number of features (only small and large initially add medium later)
-	-Implement 3 different machine learning algorithms: Ridge Regression, Decision trees (might change), Neural Networks(extendable)
+	-Implement 3 different machine learning algorithms: Ridge Regression, Decision trees (might change), Neural Networks (extendable)
 	
 By the first term must complete:
 	-Explanation of algorithms and visualisation
@@ -13,6 +13,7 @@ By the first term must complete:
 	-Run algorithms on 2 datasets
 	-Analyse and compare their performance
 	
+
 06/10/2023
 FYP Plan Submitted
 
@@ -21,3 +22,23 @@ Finished my initial plan for my FYP and submitted it for grading. It was my firs
 Also created a timeline explaining my goals for each week so that I'm on track to completing all of my final deliverables. I think that I might have given myself more time than necessary for the tasks I set but in general it seems accurate and possible to follow.
 
 The risks and mitigations sections was straightforward to write and I'll keep thinking about any other possible risks that might exist so that I can add them to the list and work on preventing them.
+
+
+19/10/2023
+Supervisor Meeting
+
+Second Supervisor Meeting to asks specific questions on project after having a better understanding from writing the plan.
+
+Questions:
+	-When should I start writing up the actual report?
+		Answer: As soon as possible, basically best to do it alongside implementation so that most of the work is done when it gets close to the deadline.
+	
+	-How much explaining of concepts should be done, i.e., how much information should I assume the reader knows?
+		Answer: Can start from very basics (supervised vs unsupervised) but keep it extremely brief at the start of the report. Then go in depth on the theoretical explanations of algorithms and preprocessing. Also explain visualisation techniques but briefly as this is not the focus of the report.
+		
+	-What structure should I follow for write up?
+		Answer: Intro, Theoretical Background (Include here algorithm/preprocessing explanations), Practical (Datasets and visualisation).
+		
+Extras:
+	-Take a look at polynomial regression as a possible technique to use.
+	-UCI to find other datasets.
