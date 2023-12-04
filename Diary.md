@@ -45,8 +45,14 @@ Extras:
 	
 
 04/12/2023
-Report Progress
+Report Progress (Abstract, Introduction, Simple & Multiple Linear Regression)
 
 Finished draft of abstract and introduction chapters of report. Included the importance of the project as a whole and what aims I strive to achieve by the end of it. Also defined what dataset I will be using and what algorithms I will implement to base the models on, as well as what performance measures I will use to analyse and compare their performances.
 
 Have also started the theoretical background chapter of the report by laying out a plan of the sections that it will include and filling them in one by one. I have completed the draft for the general introduction into what is regression and linear regression in the context of machine learning, and I am currently working on mathematical definitions of the algorithms and of the cost functions used to optimize the parameters.
+
+
+04/12/2023
+Report Progress (Simple & Multiple Linear Regression, Ridge Regression)
+
+Completed both the Simple Linear Regression and Multiple Linear Regression subsections in the theory section. I have added theoretical explanations as well as formal mathematical definition with equations. Will start work on new chapter of Ridge Regression.
