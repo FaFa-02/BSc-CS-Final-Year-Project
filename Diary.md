@@ -42,3 +42,11 @@ Questions:
 Extras:
 	-Take a look at polynomial regression as a possible technique to use.
 	-UCI to find other datasets.
+	
+
+04/12/2023
+Report Progress
+
+Finished draft of abstract and introduction chapters of report. Included the importance of the project as a whole and what aims I strive to achieve by the end of it. Also defined what dataset I will be using and what algorithms I will implement to base the models on, as well as what performance measures I will use to analyse and compare their performances.
+
+Have also started the theoretical background chapter of the report by laying out a plan of the sections that it will include and filling them in one by one. I have completed the draft for the general introduction into what is regression and linear regression in the context of machine learning, and I am currently working on mathematical definitions of the algorithms and of the cost functions used to optimize the parameters.
