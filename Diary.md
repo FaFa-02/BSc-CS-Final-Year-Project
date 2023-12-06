@@ -57,7 +57,15 @@ Report Progress (Simple & Multiple Linear Regression, Ridge Regression)
 
 Completed both the Simple Linear Regression and Multiple Linear Regression subsections in the theory section. I have added theoretical explanations as well as formal mathematical definition with equations. Will start work on new chapter of Ridge Regression.
 
+
 05/12/2023
 Report Progress (Ridge Regression)
 
 I've done a large amount of research on both multicollinearity and Ridge Regression, have also started the Ridge Regression chapter of the report. For the Ridge Regression chapter, I have decided to break it down into two parts: the first being the issue of multicollinearity and then how Ridge Regression proposes to fix them. I have finished writing the part on multicollinearity and how this affects linear regression models and have gotten started on writing how Ridge Regression solves the issues created.
+
+
+05/12/2023
+Report Progress (Ridge Regression)
+
+
+Finished all the draft sections related to  in the report. It is still possible that I come back later and talk about how to mathematically minimize the cost functions if I have the time. Now I will go back to writing the code for the actual program to work, I need to finish implementing the Ridge Regression class and also import the datasets.
