@@ -2,9 +2,9 @@
 import numpy as np
 from numpy.linalg import inv
 
-"""Module providing a linear regression classifier with appropriate functions"""
-class LinearRegressionClassifier():
-    """Class representing a linear regression classifier"""
+"""Module providing a Ridge Regression classifier with appropriate functions"""
+class RidgeRegressionClassifier():
+    """Class representing a Ridge Regression classifier"""
 
     def __init__(self, penalty):
         self.X_train = None
