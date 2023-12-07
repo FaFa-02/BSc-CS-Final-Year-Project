@@ -14,9 +14,10 @@ class LinearRegressionClassifier():
         self.X_train = X_train
         self.y_train = y_train
 
-        self.m = X_train.shape[0] 
-        self.n = X_train.shape[1]
+        self.m = X_train.shape[0]
+        self.n = X_train.shape[1] 
 
-        I = np.identity(self.m)
-
-        beta_ridge = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
+        I = np.identity(self.n)
+        
+        beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
+        print(beta_ridge_hat)
