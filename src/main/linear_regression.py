@@ -25,5 +25,15 @@ class LinearRegressionClassifier():
         # Identity matrix needed for beta_ridge_hat computation
         I = np.identity(self.n)
 
-        beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
-        print(beta_ridge_hat)
+        self.beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
+        print(self.beta_ridge_hat)
+
+    def predict(self, new_dataset):
+        """Predicts labels based on matrix of features from new samples."""
+        print(type(new_dataset))
+        predictions = np.zeros(new_dataset.shape[0])
+
+        for i in range(new_dataset.shape[0]):
+            predictions[i] = new_dataset[i].dot(self.beta_ridge_hat)
+        print(predictions)
+        return predictions
