@@ -67,5 +67,10 @@ I've done a large amount of research on both multicollinearity and Ridge Regress
 05/12/2023
 Report Progress (Ridge Regression)
 
+Finished all the draft sections related to Ridge Regression in the report. It is still possible that I come back later and talk about how to mathematically minimize the cost functions if I have the time. Now I will go back to writing the code for the actual program to work, I need to finish implementing the Ridge Regression class and also import the datasets.
 
-Finished all the draft sections related to  in the report. It is still possible that I come back later and talk about how to mathematically minimize the cost functions if I have the time. Now I will go back to writing the code for the actual program to work, I need to finish implementing the Ridge Regression class and also import the datasets.
+
+27/12/2023 (past entry)
+Code Progress 
+
+Completed implementation of Ridge Regression into python program using the matrix form of the algorithm when fitting the model to get optimal coefficients. Created corresponding TDD test for the Ridge Regression class and did basic refactoring after implementation was fininshed. In the future I plan on revisiting this class and creating further test in order to implement proper input sanitisation and exception handling. Next I plan on writing a proof of concept program that runs on a smaller dataset to test its effectivness and see weather it works or not. 
