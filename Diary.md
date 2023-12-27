@@ -73,4 +73,10 @@ Finished all the draft sections related to Ridge Regression in the report. It is
 27/12/2023 (past entry)
 Code Progress 
 
-Completed implementation of Ridge Regression into python program using the matrix form of the algorithm when fitting the model to get optimal coefficients. Created corresponding TDD test for the Ridge Regression class and did basic refactoring after implementation was fininshed. In the future I plan on revisiting this class and creating further test in order to implement proper input sanitisation and exception handling. Next I plan on writing a proof of concept program that runs on a smaller dataset to test its effectivness and see weather it works or not. 
+Completed implementation of Ridge Regression into python program using the matrix form of the algorithm when fitting the model to get optimal coefficients. Created corresponding TDD test for the Ridge Regression class and did basic refactoring after implementation was finished. In the future I plan on returning to  this class and creating further tests in order to implement proper input sanitisation and exception handling. Next, I plan on writing a proof-of-concept program that runs on a smaller dataset to test its effectiveness and see whether it works or not.
+
+
+27/12/2023 (past entry)
+Proof of Concept Progress
+
+I have created a simple proof of concept (POC) program that demonstrates Ridge Regression working on a simple dataset. I have written the code that fits the training set and predicts the test set. I also added a matplotlib graph in my code that plots the different features against each other and shows the difference between the real test set samples and the predicted test set values. New sections have also been added to the report describing the general importance of a POC program, how it was implemented using code, the visualisation of the data and results, and a reflection on the outcome.
