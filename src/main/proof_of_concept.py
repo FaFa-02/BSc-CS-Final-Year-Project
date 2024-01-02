@@ -4,15 +4,14 @@ from ridge_regression import RidgeRegressionClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Importing and defining feature and target datasets, in this case using 'waist' as target
+# Importing linnerud dataset, seperate dataset into its features and labels(waist)
 linnerud = load_linnerud()
 
 X = linnerud['data']
 y = linnerud['target'][:,1]
 
-print(y)
 
-# Plot features against targets to visualise data
+# Plot features against labels to visualise data
 fig, ax = plt.subplots(3, figsize=(15, 15))
 plt.suptitle("Linnerud_pairplot")
 
