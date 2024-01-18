@@ -37,3 +37,10 @@ class RidgeRegressionClassifier():
             predictions[i] = new_dataset[i].dot(self.beta_ridge_hat)
         print(predictions)
         return predictions
+    
+    def score(self, X_new, y_true):
+        y_pred = self.predict(X_new)
+
+        RSS = np.sum((y_true - y_pred)** 2)
+
+        return RSS
