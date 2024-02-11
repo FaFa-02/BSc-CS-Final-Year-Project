@@ -47,8 +47,10 @@ class RidgeRegressionClassifier():
         return rss_score
     
     def tss(self, X_new, y_true):
+        """Predicts values and computes TSS score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
+        #computes the average label from given data set
         y_pred_avg = np.average(y_pred)
 
         tss_score = np.sum((y_true - y_pred_avg)** 2)
