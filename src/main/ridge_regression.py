@@ -45,3 +45,13 @@ class RidgeRegressionClassifier():
         rss_score = np.sum((y_true - y_pred)** 2)
 
         return rss_score
+    
+    def tss(self, X_new, y_true):
+        y_pred = self.predict(X_new)
+
+        y_pred_avg = np.average(y_pred)
+
+        tss_score = np.sum((y_true - y_pred_avg)** 2)
+
+        return tss_score
+
