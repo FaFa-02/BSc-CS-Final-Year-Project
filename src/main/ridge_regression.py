@@ -58,6 +58,8 @@ class RidgeRegressionClassifier():
         return tss_score
     
     def score(self, X_new, y_true):
+        """Predicts values and computes R Squared score for said predictions on real targets"""
+        #Computes RSS and TSS scores to be used in R squared calculation
         rss_score = self.rss(X_new, y_true)
         tss_score = self.tss(X_new, y_true)
 
