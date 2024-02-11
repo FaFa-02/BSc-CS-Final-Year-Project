@@ -26,10 +26,10 @@ class RidgeRegressionClassifier():
         I = np.identity(self.n)
 
         self.beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
-        print(self.beta_ride_hat)
+        print(self.beta_ridge_hat)
 
     def predict(self, new_dataset):
-        """Predicts values based on matrix of features from new samples."""g
+        """Predicts values based on matrix of features from new samples."""
         print(type(new_dataset))
         predictions = np.zeros(new_dataset.shape[0])
 
@@ -38,10 +38,10 @@ class RidgeRegressionClassifier():
         print(predictions)
         return predictions
 
-    def score(self, X_new, y_true):
+    def rss(self, X_new, y_true):
         """Predicts values and computes RSS score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
-        RSS = np.sum((y_true - y_pred)** 2)
+        rss_score = np.sum((y_true - y_pred)** 2)
 
-        return RSS
+        return rss_score

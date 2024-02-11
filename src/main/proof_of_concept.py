@@ -36,6 +36,9 @@ ridge.fit(X_train, y_train)
 
 y_hat = ridge.predict(X_test)
 
+#acc = ridge.score(X_test, y_test)
+#print("acc:", acc)
+
 # Print the optimal coefficients found by the model and the predictions along with the real labels
 print("betas:", ridge.beta_ridge_hat)
 print("predictions:", y_hat)
