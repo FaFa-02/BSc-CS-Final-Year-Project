@@ -3,17 +3,17 @@ import tkinter as tk
 bg_colour = "#fff"
 
 def load_menu():
-    frame1.pack_propagate(False)
+    menu.pack_propagate(False)
 
-    # frame1 widgets
-    tk.Label(frame1,
+    # menu frame widgets
+    tk.Label(menu,
             text="Ridge & Lasso Regression Menu",
             bg=bg_colour,
             fg="black",
             font=("TkMenuFont", 14)
             ).pack()
 
-    tk.Button(frame1,
+    tk.Button(menu,
             text="Proof of Concept",
             font=("TkMenuFont", 20),
             bg=bg_colour,
@@ -32,7 +32,12 @@ root.title("Model Menu")
 root.eval("tk::PlaceWindow . center")
 
 # Create frame widget
-frame1 = tk.Frame(root, width=500, height=600, bg=bg_colour)
-frame1.grid(row=0, column=0)
+menu = tk.Frame(root, width=500, height=600, bg=bg_colour)
+poc = tk.Frame(root, bg=bg_colour)
 
+for frame in (menu, poc):
+    frame.grid(row=0, column=0)
+
+load_menu()
+# Run appplication
 root.mainloop()
