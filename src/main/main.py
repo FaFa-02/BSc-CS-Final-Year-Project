@@ -46,6 +46,9 @@ class Poc:
         self.poc.grid(row=0, column=0)
         self.poc.pack_propagate(False)
 
+        # Model parameters
+        alpha = 0
+
         # Importing linnerud dataset, seperate dataset into its features and labels(waist)
         linnerud = load_linnerud()
 
@@ -68,6 +71,25 @@ class Poc:
             cursor="hand2",
             command=lambda:load_data_vis(self)
             ).pack()
+        
+        # Text field to get user inputed value for alpha
+        alpha_input = tk.Text(self.poc,
+                bg="#EEDFCC",
+                height=1,
+                width=5
+                )
+        alpha_input.pack()
+        alpha_input.insert(tk.END, 0)
+
+        # Button to update alpha value with user inputed data
+        tk.Button(self.poc,
+            text="Select alpha",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:update_alpha(self)
+            ).pack()
 
         # Generates and displays visualisation of data
         def load_data_vis(self):
@@ -84,6 +106,11 @@ class Poc:
                 ax[i].set_ylabel(linnerud['target_names'][1])
 
             plt.show()
+        
+        # Takes value from text field and updates alpha variable with it
+        def update_alpha(self):
+            self.alpha = alpha_input.get("1.0", "end-1c")
+
 
 
 def main():
