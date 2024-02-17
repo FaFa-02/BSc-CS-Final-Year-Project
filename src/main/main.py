@@ -23,6 +23,7 @@ class Menu:
             font=("TkMenuFont", 14)
             ).pack()
 
+        # Opens POC menu window when pressed
         tk.Button(self.menu,
             text="Proof of Concept",
             font=("TkMenuFont", 20),
@@ -32,6 +33,7 @@ class Menu:
             command=lambda:load_poc(self)
             ).pack()
 
+        #opens new POC window
         def load_poc(self):
             self.newWindow = tk.Toplevel(self.parent)
             self.app = Poc(self.newWindow)
@@ -56,7 +58,8 @@ class Poc:
             fg="black",
             font=("TkMenuFont", 14)
             ).pack()
-        
+
+        # Button that displays data visualisation when pressed
         tk.Button(self.poc,
             text="Data Visualisation",
             font=("TkMenuFont", 20),
@@ -65,7 +68,7 @@ class Poc:
             cursor="hand2",
             command=lambda:load_data_vis(self)
             ).pack()
-        
+
         # Generates and displays visualisation of data
         def load_data_vis(self):
             fig, ax = plt.subplots(3, figsize=(15, 15))
