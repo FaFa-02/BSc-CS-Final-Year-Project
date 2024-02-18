@@ -125,12 +125,14 @@ class Poc:
         def update_alpha(self):
             self.alpha = alpha_input.get("1.0", "end-1c")
 
+        # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_poc(self, a):
             ridge = RidgeRegressionClassifier(a)
             ridge.fit(X_train, y_train)
 
             y_hat = ridge.predict(X_test)
 
+            # Plots prediction versus true labels
             fig, ax = plt.subplots(3, figsize=(15, 15))
             plt.suptitle("Linnerud_pairplot")
 
