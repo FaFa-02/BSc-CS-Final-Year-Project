@@ -123,7 +123,7 @@ class Poc:
 
         # Takes value from text field and updates alpha variable with it
         def update_alpha(self):
-            self.alpha = alpha_input.get("1.0", "end-1c")
+            self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_poc(self, a):
