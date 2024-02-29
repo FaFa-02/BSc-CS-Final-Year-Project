@@ -1,10 +1,13 @@
 """Module initialising program application with appropriate user functions"""
+import os
 import tkinter as tk
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from ridge_regression import RidgeRegressionClassifier
-import matplotlib.pyplot as plt
+
 
 BG_COLOUR = "#fff"
 
@@ -140,6 +143,14 @@ def main():
     app = Menu(root)
     root.title("Model Menu")
     root.eval("tk::PlaceWindow . center")
+
+    # Read Boston Housing dataset
+    col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
+    boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
+
+    # Seperates features and labels
+    boston_labels = boston_data['MEDV']
+    boston_features = boston_data.drop('MEDV', axis=1)
 
     # Run appplication
     root.mainloop()
