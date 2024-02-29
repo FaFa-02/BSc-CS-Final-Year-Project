@@ -1,6 +1,7 @@
 """Module needed in order to compute mathematical equations with matrices"""
 import numpy as np
 from numpy.linalg import inv
+import matplotlib.pyplot as plt
 
 """Module providing a Ridge Regression classifier with appropriate functions"""
 class RidgeRegressionClassifier():
@@ -38,33 +39,14 @@ class RidgeRegressionClassifier():
         print(predictions)
         return predictions
 
-    def rss(self, X_new, y_true):
-        """Predicts values and computes RSS score for said predictions on real targets"""
-        y_pred = self.predict(X_new)
-
-        rss_score = np.sum((y_true - y_pred)** 2)
-
-        return rss_score
-    
-    def tss(self, X_new, y_true):
-        """Predicts values and computes TSS score for said predictions on real targets"""
-        y_pred = self.predict(X_new)
-
-        #computes the average label from given data set
-        y_pred_avg = np.average(y_pred)
-
-        tss_score = np.sum((y_true - y_pred_avg)** 2)
-
-        return tss_score
-    
     def score(self, X_new, y_true):
         """Predicts values and computes R Squared score for said predictions on real targets"""
-        #Computes RSS and TSS scores to be used in R squared calculation
-        rss_score = self.rss(X_new, y_true)
-        tss_score = self.tss(X_new, y_true)
+        y_pred = self.predict(X_new)
 
-        R2 = (tss_score - rss_score) / tss_score
-
-        return R2
-
-
+        # Creates a plot of the true vs predicted target values
+        plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
+        plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
+        plt.xlabel("True Label")
+        plt.ylabel("Predicted Label")
+        plt.title("Actual vs Predicted Waist")
+        plt.show()
