@@ -133,26 +133,6 @@ class Poc:
             y_hat = ridge.predict(X_test)
             ridge.score(X_test, y_test)
 
-            """
-            # Plots prediction versus true labels
-            fig, ax = plt.subplots(3, figsize=(15, 15))
-            plt.suptitle("Linnerud_pairplot")
-
-            x = np.linspace(-2, 2, 100)
-            for i in range(3):
-                print(i)
-                ax[i].scatter(X[:,i], y, s=100)
-                ax[i].scatter(X_test[:,i], y_hat)
-                ax[i].set_xticks(())
-                ax[i].set_yticks(())
-                ax[i].set_xlabel(linnerud['feature_names'][i])
-                ax[i].set_ylabel(linnerud['target_names'][1])
-
-            plt.show()
-            """
-
-
-
 def main():
     """Class representing the root window"""
     # Initialises the application on menu page
