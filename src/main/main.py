@@ -131,7 +131,9 @@ class Poc:
             ridge.fit(X_train, y_train)
 
             y_hat = ridge.predict(X_test)
+            ridge.score(X_test, y_test)
 
+            """
             # Plots prediction versus true labels
             fig, ax = plt.subplots(3, figsize=(15, 15))
             plt.suptitle("Linnerud_pairplot")
@@ -147,6 +149,7 @@ class Poc:
                 ax[i].set_ylabel(linnerud['target_names'][1])
 
             plt.show()
+            """
 
 
 
