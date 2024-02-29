@@ -80,3 +80,9 @@ Completed implementation of Ridge Regression into python program using the matri
 Proof of Concept Progress
 
 I have created a simple proof of concept (POC) program that demonstrates Ridge Regression working on a simple dataset. I have written the code that fits the training set and predicts the test set. I also added a matplotlib graph in my code that plots the different features against each other and shows the difference between the real test set samples and the predicted test set values. New sections have also been added to the report describing the general importance of a POC program, how it was implemented using code, the visualisation of the data and results, and a reflection on the outcome.
+
+
+05/01/2024
+Interim Report Git Release-1
+
+Have completed first version of my FYP. It includes my Interim Report along with an implementation of the Ridge Regression algorithm form scratch. The code also runs on a smaller dataset as a proof of concept to show algorithm in action and to serve as point where I can branch off in order to expand the project. An official release has been made on git where the candidate release branch has been created, worked on, and tagged with a version number. Also a CHANGELOD.md file was created and updated.
