@@ -229,11 +229,11 @@ class RidgePage:
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_ridge(self, a):
-            # Initialized Ridge Regression model
+            # Initialized and fit training data to Ridge Regression model
             ridge = RidgeRegressionClassifier(a)
             ridge.fit(X_train, y_train)
 
-            y_hat = ridge.predict(X_test)
+            # Predict values and output their score and plot predicted vs true points
             ridge.score(X_test, y_test)
 
 
