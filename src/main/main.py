@@ -36,11 +36,26 @@ class Menu:
             cursor="hand2",
             command=lambda:load_poc(self)
             ).pack()
+        
+        # Opens ridge regression menu window when pressed
+        tk.Button(self.menu,
+            text="Ridge Regression Model",
+            font=("TkMenuFont", 20),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:load_ridge(self)
+            ).pack()
 
         #opens new POC window
         def load_poc(self):
             self.newWindow = tk.Toplevel(self.parent)
             self.app = Poc(self.newWindow)
+
+        #opens new ridge regression model window
+        def load_ridge(self):
+            self.newWindow = tk.Toplevel(self.parent)
+            self.app = RidgePage(self.newWindow)
 
 class Poc:
     """Class representing the proof of concept program window"""
@@ -135,6 +150,14 @@ class Poc:
 
             y_hat = ridge.predict(X_test)
             ridge.score(X_test, y_test)
+
+class RidgePage:
+    """Class representing the ridge regression model program window"""
+    def __init__(self, parent):
+        self.parent = parent
+        self.ridge_page = tk.Frame(self.parent, width=500, height=300, bg=BG_COLOUR)
+        self.ridge_page.grid(row=0, column=0)
+        self.ridge_page.pack_propagate(False)
 
 def main():
     """Class representing the root window"""
