@@ -159,6 +159,73 @@ class RidgePage:
         self.ridge_page.grid(row=0, column=0)
         self.ridge_page.pack_propagate(False)
 
+        # Model parameters
+        self.alpha = 0
+
+        tk.Label(self.ridge_page,
+            text="Proof of concept Ridge Regression Program",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Button that displays data visualisation when pressed
+        tk.Button(self.ridge_page,
+            text="Data Visualisation",
+            font=("TkMenuFont", 20),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:load_data_vis(self)
+            ).pack()
+
+        # Text field to get user inputed value for alpha
+        alpha_input = tk.Text(self.ridge_page,
+                bg="#EEDFCC",
+                height=1,
+                width=5
+                )
+        alpha_input.pack()
+        alpha_input.insert(tk.END, 0)
+
+        # Button to update alpha value with user inputed data
+        tk.Button(self.ridge_page,
+            text="Select alpha",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:update_alpha(self)
+            ).pack()
+
+        # Button to run model on test data and output results
+        tk.Button(self.ridge_page,
+            text="Predict test set",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:predict_poc(self, self.alpha)
+            ).pack()
+
+        # Generates and displays visualisation of data
+        def load_data_vis(self):
+            return None
+
+        # Takes value from text field and updates alpha variable with it
+        def update_alpha(self):
+            self.alpha = float(alpha_input.get("1.0", "end-1c"))
+
+        """
+        # Instantiates and trains model to dataset, then executes on test set and output results
+        def predict_poc(self, a):
+            ridge = RidgeRegressionClassifier(a)
+            ridge.fit(X_train, y_train)
+
+            y_hat = ridge.predict(X_test)
+            ridge.score(X_test, y_test)
+        """
+
 def main():
     """Class representing the root window"""
     # Initialises the application on menu page
