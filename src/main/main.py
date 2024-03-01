@@ -159,11 +159,22 @@ class RidgePage:
         self.ridge_page.grid(row=0, column=0)
         self.ridge_page.pack_propagate(False)
 
+        # Read Boston Housing dataset
+        col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
+        boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
+
+        # Seperates features and labels
+        boston_features = (boston_data.drop('MEDV', axis=1)).to_numpy()
+        boston_labels = (boston_data['MEDV']).to_numpy()
+
+        # Split dataset into training and test sets in preparation for the Ridge Regression model
+        X_train, X_test, y_train, y_test = train_test_split(boston_features, boston_labels, random_state=0)
+
         # Model parameters
         self.alpha = 0
 
         tk.Label(self.ridge_page,
-            text="Proof of concept Ridge Regression Program",
+            text="Ridge Regression on Boston Housing Problem",
             bg=BG_COLOUR,
             fg="black",
             font=("TkMenuFont", 14)
@@ -172,7 +183,7 @@ class RidgePage:
         # Button that displays data visualisation when pressed
         tk.Button(self.ridge_page,
             text="Data Visualisation",
-            font=("TkMenuFont", 20),
+            font=("TkMenuFont", 14),
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
@@ -205,7 +216,7 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_poc(self, self.alpha)
+            command=lambda:predict_ridge(self, self.alpha)
             ).pack()
 
         # Generates and displays visualisation of data
@@ -216,15 +227,15 @@ class RidgePage:
         def update_alpha(self):
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
-        """
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_poc(self, a):
+        def predict_ridge(self, a):
+            # Initialized Ridge Regression model
             ridge = RidgeRegressionClassifier(a)
             ridge.fit(X_train, y_train)
 
             y_hat = ridge.predict(X_test)
             ridge.score(X_test, y_test)
-        """
+
 
 def main():
     """Class representing the root window"""
@@ -233,14 +244,6 @@ def main():
     app = Menu(root)
     root.title("Model Menu")
     root.eval("tk::PlaceWindow . center")
-
-    # Read Boston Housing dataset
-    col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
-    boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
-
-    # Seperates features and labels
-    boston_labels = boston_data['MEDV']
-    boston_features = boston_data.drop('MEDV', axis=1)
 
     # Run appplication
     root.mainloop()
