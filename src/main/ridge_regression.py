@@ -39,9 +39,31 @@ class RidgeRegressionClassifier():
         print("prediction shape:",predictions.shape)
         return predictions
 
+    def tss(self, y):
+        """Calculates total sum of squares from a dataset"""
+        y_mean = np.mean(y)
+
+        TSS = np.sum((y - y_mean)**2)
+
+        return TSS
+
+    def sse(self, y, y_pred):
+        """Calculates residual sum of squares from a dataset"""
+        SSE = np.sum((y - y_pred)**2)
+
+        return SSE
+
+    def r2(self, y, y_pred):
+        """Calculates the R2 score of predicted values on true values"""
+        R2 = 1 - (self.sse(y, y_pred) / self.tss(y))
+
+        return R2
+
     def score(self, X_new, y_true, label_name):
         """Predicts values and computes R Squared score for said predictions on real targets"""
         y_pred = self.predict(X_new)
+
+        self.r2(y_true, y_pred)
 
         # Find largest and smallest target value, either true or predicted
         largest_label = max(np.amax(y_true), np.amax(y_pred))
