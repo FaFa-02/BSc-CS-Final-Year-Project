@@ -48,5 +48,5 @@ class RidgeRegressionClassifier():
         plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
         plt.xlabel("True " + label_name)
         plt.ylabel("Predicted " + label_name)
-        plt.title("Actual vs Predicted Waist")
+        plt.title("Actual vs Predicted " + label_name)
         plt.show()
