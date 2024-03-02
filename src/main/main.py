@@ -216,7 +216,7 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_ridge(self, self.alpha)
+            command=lambda:predict_ridge(self, self.alpha, "House Prices")
             ).pack()
 
         # Generates and displays visualisation of data
@@ -228,13 +228,13 @@ class RidgePage:
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, a):
+        def predict_ridge(self, a, label_name):
             # Initialized and fit training data to Ridge Regression model
             ridge = RidgeRegressionClassifier(a)
             ridge.fit(X_train, y_train)
 
             # Predict values and output their score and plot predicted vs true points
-            ridge.score(X_test, y_test)
+            ridge.score(X_test, y_test, label_name)
 
 
 def main():

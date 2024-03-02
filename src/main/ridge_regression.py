@@ -39,14 +39,14 @@ class RidgeRegressionClassifier():
         print("prediction shape:",predictions.shape)
         return predictions
 
-    def score(self, X_new, y_true):
+    def score(self, X_new, y_true, label_name):
         """Predicts values and computes R Squared score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
         # Creates a plot of the true vs predicted target values
         plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
         plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
-        plt.xlabel("True Label")
-        plt.ylabel("Predicted Label")
+        plt.xlabel("True " + label_name)
+        plt.ylabel("Predicted " + label_name)
         plt.title("Actual vs Predicted Waist")
         plt.show()
