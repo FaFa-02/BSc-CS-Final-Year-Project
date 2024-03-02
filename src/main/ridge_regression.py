@@ -63,15 +63,18 @@ class RidgeRegressionClassifier():
         """Predicts values and computes R Squared score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
-        self.r2(y_true, y_pred)
+        # Computes and prints R2 score
+        r2_score = self.r2(y_true, y_pred)
+        print("r2 =", r2_score)
 
         # Find largest and smallest target value, either true or predicted
         largest_label = max(np.amax(y_true), np.amax(y_pred))
         smallest_label = min(np.amin(y_true), np.amin(y_pred))
 
         # Creates a plot of the true vs predicted target values
-        plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
         plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
+        plt.legend(["Predicted Values"], title=f"R2 score: {r2_score:.3f} \nAlpha: {self.penalty}", alignment='left')
+        plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
         plt.xlim(smallest_label, largest_label)
         plt.ylim(smallest_label, largest_label)
         plt.xlabel("True " + label_name)
