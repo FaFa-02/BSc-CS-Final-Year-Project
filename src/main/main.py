@@ -229,6 +229,9 @@ class RidgePage:
             # Plot eigenvalues against their indexes
             np.arange(1,boston_eignvals.size)
             plt.plot(np.arange(1,boston_eignvals.size+1), boston_eignvals)
+            plt.xlabel("Component Number")
+            plt.ylabel("EigenValues")
+            plt.title("Scree Plot")
             plt.show()
 
         # Takes value from text field and updates alpha variable with it
