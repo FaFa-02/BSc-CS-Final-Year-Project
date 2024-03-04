@@ -34,6 +34,10 @@ ridge = RidgeRegressionClassifier(1)
 ridge.fit(X_train, y_train)
 
 y_hat = ridge.predict(X_test)
+ridge.score(X_test, y_test)
+
+#acc = ridge.score(X_test, y_test)
+#print("acc:", acc)
 
 # Print the optimal coefficients found by the model and the predictions along with the real labels
 print("betas:", ridge.beta_ridge_hat)
@@ -44,6 +48,7 @@ print("true labels:", y_test)
 fig, ax = plt.subplots(3, figsize=(15, 15))
 plt.suptitle("Linnerud_pairplot")
 
+"""
 x = np.linspace(-2, 2, 100)
 for i in range(3):
     print(i)
@@ -55,3 +60,4 @@ for i in range(3):
     ax[i].set_ylabel(linnerud['target_names'][1])
 
 plt.show()
+"""

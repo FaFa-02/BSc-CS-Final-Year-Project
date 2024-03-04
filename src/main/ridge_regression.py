@@ -1,6 +1,7 @@
 """Module needed in order to compute mathematical equations with matrices"""
 import numpy as np
 from numpy.linalg import inv
+import matplotlib.pyplot as plt
 
 """Module providing a Ridge Regression classifier with appropriate functions"""
 class RidgeRegressionClassifier():
@@ -26,22 +27,57 @@ class RidgeRegressionClassifier():
         I = np.identity(self.n)
 
         self.beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
-        print(self.beta_ride_hat)
+        print("beta hat values:",self.beta_ridge_hat)
 
     def predict(self, new_dataset):
-        """Predicts values based on matrix of features from new samples."""g
-        print(type(new_dataset))
+        """Predicts values based on matrix of features from new samples."""
         predictions = np.zeros(new_dataset.shape[0])
 
         for i in range(new_dataset.shape[0]):
             predictions[i] = new_dataset[i].dot(self.beta_ridge_hat)
-        print(predictions)
+
+        print("prediction shape:",predictions.shape)
         return predictions
 
-    def score(self, X_new, y_true):
-        """Predicts values and computes RSS score for said predictions on real targets"""
+    def tss(self, y):
+        """Calculates total sum of squares from a dataset"""
+        y_mean = np.mean(y)
+
+        TSS = np.sum((y - y_mean)**2)
+
+        return TSS
+
+    def sse(self, y, y_pred):
+        """Calculates residual sum of squares from a dataset"""
+        SSE = np.sum((y - y_pred)**2)
+
+        return SSE
+
+    def r2(self, y, y_pred):
+        """Calculates the R2 score of predicted values on true values"""
+        R2 = 1 - (self.sse(y, y_pred) / self.tss(y))
+
+        return R2
+
+    def score(self, X_new, y_true, label_name):
+        """Predicts values and computes R Squared score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
-        RSS = np.sum((y_true - y_pred)** 2)
+        # Computes and prints R2 score
+        r2_score = self.r2(y_true, y_pred)
+        print("r2 =", r2_score)
 
-        return RSS
+        # Find largest and smallest target value, either true or predicted
+        largest_label = max(np.amax(y_true), np.amax(y_pred))
+        smallest_label = min(np.amin(y_true), np.amin(y_pred))
+
+        # Creates a plot of the true vs predicted target values
+        plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
+        plt.legend(["Predicted Values"], title=f"R2 score: {r2_score:.3f} \nAlpha: {self.penalty}", alignment='left')
+        plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
+        plt.xlim(smallest_label, largest_label)
+        plt.ylim(smallest_label, largest_label)
+        plt.xlabel("True " + label_name)
+        plt.ylabel("Predicted " + label_name)
+        plt.title("Actual vs Predicted " + label_name)
+        plt.show()
