@@ -221,13 +221,15 @@ class RidgePage:
 
         # Generates and displays visualisation of data
         def load_data_vis(self):
+            # Compute eigenvalues of Boston dataset, first create symmetric matrix
             XTX = np.dot(np.transpose(boston_features), boston_features)
             boston_eignvals = np.linalg.eigvals(XTX)
             print(boston_eignvals)
+
+            # Plot eigenvalues against their indexes
             np.arange(1,boston_eignvals.size)
             plt.plot(np.arange(1,boston_eignvals.size+1), boston_eignvals)
             plt.show()
-            return None
 
         # Takes value from text field and updates alpha variable with it
         def update_alpha(self):
