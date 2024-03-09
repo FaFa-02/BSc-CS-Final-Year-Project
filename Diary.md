@@ -98,3 +98,9 @@ Have added subsection to final report explaining how I derived the Ridge Regress
 Programming Progress (GUI and score)
 
 I have made many advancements this last week in regard to the programming part of my project. I have constructed a GUI for my project where a user can interact with both the proof-of-concept program and the ridge regression model trained on the Boston housing problem dataset. These programs can take input from the user of what alpha values they want to use and using it when predicting their values on the test set. The results information is displayed as a graph where the predicted data is plotted against the true and predicted values.
+
+
+09/03/2024
+Supervisor Meeting & Report Progress
+
+I had a very useful meeting with my supervisor recently where I got a clear idea of what my next steps should be in order to complete my report. Until now I have managed to program and explain theoretical most of the tools that I will need to gather my data. Before I was not sure what steps I should take next, but now I created a plan for what my next chapters, Method and Experiment, should include. I have defined the sections that I will need to discuss within each chapter and now I will get started on filling out this structure with words and explanations.
