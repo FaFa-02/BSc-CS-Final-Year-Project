@@ -13,6 +13,15 @@ BG_COLOUR = "#fff"
 
 class Menu:
     """Class representing the main menu window"""
+
+    # Read Boston Housing dataset
+    col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
+    boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
+
+    # Seperates features and labels
+    boston_features = (boston_data.drop('MEDV', axis=1)).to_numpy()
+    boston_labels = (boston_data['MEDV']).to_numpy()
+
     def __init__(self, parent):
         self.parent = parent
         self.menu = tk.Frame(self.parent, width=500, height=600, bg=BG_COLOUR)
@@ -208,16 +217,8 @@ class RidgePage:
         self.ridge_page.grid(row=0, column=0)
         self.ridge_page.pack_propagate(False)
 
-        # Read Boston Housing dataset
-        col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
-        boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
-
-        # Seperates features and labels
-        boston_features = (boston_data.drop('MEDV', axis=1)).to_numpy()
-        boston_labels = (boston_data['MEDV']).to_numpy()
-
         # Split dataset into training and test sets in preparation for the Ridge Regression model
-        X_train, X_test, y_train, y_test = train_test_split(boston_features, boston_labels, random_state=0)
+        X_train, X_test, y_train, y_test = train_test_split(Menu.boston_features, Menu.boston_labels, random_state=0)
 
         # Model parameters
         self.alpha = 0
@@ -271,7 +272,7 @@ class RidgePage:
         # Generates and displays visualisation of data
         def load_data_vis(self):
             # Compute eigenvalues of Boston dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(boston_features), boston_features)
+            XTX = np.dot(np.transpose(Menu.boston_features), Menu.boston_features)
             boston_eignvals = np.linalg.eigvals(XTX)
             print(boston_eignvals)
 
