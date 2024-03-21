@@ -27,6 +27,16 @@ class Menu:
             font=("TkMenuFont", 14)
             ).pack()
 
+        # Opens the data visualisation window when pressed
+        tk.Button(self.menu,
+            text="Data Visualisation",
+            font=("TkMenuFont", 20),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:load_data_vis_page(self)
+            ).pack()
+
         # Opens POC menu window when pressed
         tk.Button(self.menu,
             text="Proof of Concept",
@@ -36,7 +46,7 @@ class Menu:
             cursor="hand2",
             command=lambda:load_poc(self)
             ).pack()
-        
+
         # Opens ridge regression menu window when pressed
         tk.Button(self.menu,
             text="Ridge Regression Model",
@@ -47,15 +57,54 @@ class Menu:
             command=lambda:load_ridge(self)
             ).pack()
 
-        #opens new POC window
+        # Opens new POC window
         def load_poc(self):
             self.newWindow = tk.Toplevel(self.parent)
             self.app = Poc(self.newWindow)
 
-        #opens new ridge regression model window
+        # Opens new ridge regression model window
         def load_ridge(self):
             self.newWindow = tk.Toplevel(self.parent)
-            self.app = RidgePage(self.newWindow)
+            self.app = RidgePage(self.newWindow) 
+
+        # Opens new data visualisation window
+        def load_data_vis_page(self):
+            self.newWindow = tk.Toplevel(self.parent)
+            self.app = DataVisPage(self.newWindow)
+
+class DataVisPage():
+    """Class representing the data visualisation program window"""
+    def __init__(self, parent):
+        self.parent = parent
+        self.data_vis_page = tk.Frame(self.parent, width=500, height=300, bg=BG_COLOUR)
+        self.data_vis_page.grid(row=0, column=0)
+        self.data_vis_page.pack_propagate(False)
+
+        # Button that displays data visualisation for Boston housing dataset when pressed
+        tk.Button(self.data_vis_page,
+                text="Eignvaleus for Boston Housing Dataset",
+                font=("TkMenuFont", 14),
+                bg=BG_COLOUR,
+                fg="black",
+                cursor="hand2",
+                #command=lambda:load_data_vis(self)
+                ).pack()
+"""
+        # Generates and displays visualisation of data
+        def load_data_vis(self):
+            # Compute eigenvalues of Boston dataset, first create symmetric matrix
+            XTX = np.dot(np.transpose(boston_features), boston_features)
+            boston_eignvals = np.linalg.eigvals(XTX)
+            print(boston_eignvals)
+
+            # Plot eigenvalues against their indexes
+            np.arange(1,boston_eignvals.size)
+            plt.plot(np.arange(1,boston_eignvals.size+1), boston_eignvals)
+            plt.xlabel("Component Number")
+            plt.ylabel("EigenValues")
+            plt.title("Scree Plot")
+            plt.show()
+"""
 
 class Poc:
     """Class representing the proof of concept program window"""
