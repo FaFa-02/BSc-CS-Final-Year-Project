@@ -96,13 +96,13 @@ class DataVisPage():
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                #command=lambda:load_data_vis(self)
+                command=lambda:load_data_vis_boston(self)
                 ).pack()
-"""
+
         # Generates and displays visualisation of data
-        def load_data_vis(self):
+        def load_data_vis_boston(self):
             # Compute eigenvalues of Boston dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(boston_features), boston_features)
+            XTX = np.dot(np.transpose(Menu.boston_features), Menu.boston_features)
             boston_eignvals = np.linalg.eigvals(XTX)
             print(boston_eignvals)
 
@@ -113,7 +113,7 @@ class DataVisPage():
             plt.ylabel("EigenValues")
             plt.title("Scree Plot")
             plt.show()
-"""
+
 
 class Poc:
     """Class representing the proof of concept program window"""
@@ -230,16 +230,6 @@ class RidgePage:
             font=("TkMenuFont", 14)
             ).pack()
 
-        # Button that displays data visualisation when pressed
-        tk.Button(self.ridge_page,
-            text="Data Visualisation",
-            font=("TkMenuFont", 14),
-            bg=BG_COLOUR,
-            fg="black",
-            cursor="hand2",
-            command=lambda:load_data_vis(self)
-            ).pack()
-
         # Text field to get user inputed value for alpha
         alpha_input = tk.Text(self.ridge_page,
                 bg="#EEDFCC",
@@ -269,21 +259,6 @@ class RidgePage:
             command=lambda:predict_ridge(self, self.alpha, "House Prices")
             ).pack()
 
-        # Generates and displays visualisation of data
-        def load_data_vis(self):
-            # Compute eigenvalues of Boston dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(Menu.boston_features), Menu.boston_features)
-            boston_eignvals = np.linalg.eigvals(XTX)
-            print(boston_eignvals)
-
-            # Plot eigenvalues against their indexes
-            np.arange(1,boston_eignvals.size)
-            plt.plot(np.arange(1,boston_eignvals.size+1), boston_eignvals)
-            plt.xlabel("Component Number")
-            plt.ylabel("EigenValues")
-            plt.title("Scree Plot")
-            plt.show()
-
         # Takes value from text field and updates alpha variable with it
         def update_alpha(self):
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
@@ -296,7 +271,6 @@ class RidgePage:
 
             # Predict values and output their score and plot predicted vs true points
             ridge.score(X_test, y_test, label_name)
-
 
 def main():
     """Class representing the root window"""
