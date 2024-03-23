@@ -14,13 +14,16 @@ BG_COLOUR = "#fff"
 class Menu:
     """Class representing the main menu window"""
 
-    # Read Boston Housing dataset
+    # Read Boston Housing dataset and seperate features and labels
     col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
-    boston_data = pd.read_csv("Boston_Housing_Dataset/housing.csv", delimiter=r"\s+", names=col_names)
-
-    # Seperates features and labels
+    boston_data = pd.read_csv("Datasets/boston_housing.csv", delimiter=r"\s+", names=col_names)
     boston_features = (boston_data.drop('MEDV', axis=1)).to_numpy()
     boston_labels = (boston_data['MEDV']).to_numpy()
+
+    # Read song dataset and seperate features and labels
+    song_data = pd.read_csv("Datasets/YearPredictionMSD.txt", header=None)
+    song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
+    song_labels = (song_data[song_data.columns[0]]).to_numpy()
 
     def __init__(self, parent):
         self.parent = parent
@@ -98,6 +101,16 @@ class DataVisPage():
                 cursor="hand2",
                 command=lambda:load_data_vis_boston(self)
                 ).pack()
+        
+        # Button that displays data visualisation for Boston housing dataset when pressed
+        tk.Button(self.data_vis_page,
+                text="Eignvaleus for Song Prediction Dataset",
+                font=("TkMenuFont", 14),
+                bg=BG_COLOUR,
+                fg="black",
+                cursor="hand2",
+                command=lambda:load_data_vis_song(self)
+                ).pack()
 
         # Generates and displays visualisation of data
         def load_data_vis_boston(self):
@@ -114,6 +127,20 @@ class DataVisPage():
             plt.title("Scree Plot")
             plt.show()
 
+        # Generates and displays visualisation of data for song dataset
+        def load_data_vis_song(self):
+            # Compute eigenvalues of song dataset, first create symmetric matrix
+            XTX = np.dot(np.transpose(Menu.song_features), Menu.song_features)
+            song_eignvals = np.linalg.eigvals(XTX)
+            print(song_eignvals)
+
+            # Plot eigenvalues against their indexes
+            np.arange(1,song_eignvals.size)
+            plt.plot(np.arange(1,song_eignvals.size+1), song_eignvals)
+            plt.xlabel("Component Number")
+            plt.ylabel("EigenValues")
+            plt.title("Scree Plot")
+            plt.show()
 
 class Poc:
     """Class representing the proof of concept program window"""
