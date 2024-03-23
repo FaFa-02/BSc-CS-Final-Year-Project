@@ -99,7 +99,7 @@ class DataVisPage():
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:load_data_vis_boston(self)
+                command=lambda:load_data_vis(self, Menu.boston_features)
                 ).pack()
         
         # Button that displays data visualisation for Boston housing dataset when pressed
@@ -109,34 +109,19 @@ class DataVisPage():
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:load_data_vis_song(self)
+                command=lambda:load_data_vis(self, Menu.song_features)
                 ).pack()
 
         # Generates and displays visualisation of data
-        def load_data_vis_boston(self):
-            # Compute eigenvalues of Boston dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(Menu.boston_features), Menu.boston_features)
-            boston_eignvals = np.linalg.eigvals(XTX)
-            print(boston_eignvals)
+        def load_data_vis(self, feature_set):
+            # Compute eigenvalues of dataset, first create symmetric matrix
+            XTX = np.dot(np.transpose(feature_set), feature_set)
+            eignvals = np.linalg.eigvals(XTX)
+            print(eignvals)
 
             # Plot eigenvalues against their indexes
-            np.arange(1,boston_eignvals.size)
-            plt.plot(np.arange(1,boston_eignvals.size+1), boston_eignvals)
-            plt.xlabel("Component Number")
-            plt.ylabel("EigenValues")
-            plt.title("Scree Plot")
-            plt.show()
-
-        # Generates and displays visualisation of data for song dataset
-        def load_data_vis_song(self):
-            # Compute eigenvalues of song dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(Menu.song_features), Menu.song_features)
-            song_eignvals = np.linalg.eigvals(XTX)
-            print(song_eignvals)
-
-            # Plot eigenvalues against their indexes
-            np.arange(1,song_eignvals.size)
-            plt.plot(np.arange(1,song_eignvals.size+1), song_eignvals)
+            np.arange(1,eignvals.size)
+            plt.plot(np.arange(1,eignvals.size+1), eignvals)
             plt.xlabel("Component Number")
             plt.ylabel("EigenValues")
             plt.title("Scree Plot")
