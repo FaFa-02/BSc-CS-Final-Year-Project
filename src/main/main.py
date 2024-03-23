@@ -116,7 +116,7 @@ class DataVisPage():
         def load_data_vis(self, feature_set):
             # Compute eigenvalues of dataset, first create symmetric matrix
             XTX = np.dot(np.transpose(feature_set), feature_set)
-            eignvals = np.linalg.eigvals(XTX)
+            eignvals = np.sqrt(np.linalg.eigvals(XTX))
             print(eignvals)
 
             # Plot eigenvalues against their indexes
