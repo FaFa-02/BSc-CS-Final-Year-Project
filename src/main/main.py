@@ -4,6 +4,7 @@ import tkinter as tk
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from ridge_regression import RidgeRegressionClassifier
@@ -112,19 +113,45 @@ class DataVisPage():
                 command=lambda:load_data_vis(self, Menu.song_features)
                 ).pack()
 
+        # Computes eigenvalues of a given dataset
+        def comp_eigenvals(feature_set):
+            # Create symmetric matrix brfore compting eigenvalues
+            XTX = np.dot(np.transpose(feature_set), feature_set)
+
+            eigenvals = np.sqrt(np.linalg.eigvals(XTX))
+
+            return np.round(eigenvals, decimals=2)
+
+        # Computes condition indicies of a dataset given its eigenvalues
+        def comp_ci(eigenvals):
+            ci = np.arange(1,eigenvals.size+1)
+
+            for i in range(eigenvals.size):
+                ci[i] = np.sqrt(np.max(eigenvals) // eigenvals[i])
+
+            return ci
+
         # Generates and displays visualisation of data
         def load_data_vis(self, feature_set):
-            # Compute eigenvalues of dataset, first create symmetric matrix
-            XTX = np.dot(np.transpose(feature_set), feature_set)
-            eignvals = np.sqrt(np.linalg.eigvals(XTX))
-            print("eigenvalues:", eignvals)
+            # Compute eigenvalues and condition indices for dataset
+            eignvals = comp_eigenvals(feature_set)
+            ci = comp_ci(eignvals)
 
-            # Compute condition indices for eigenvals
-            ci = np.arange(1,eignvals.size+1)
-            for i in range(eignvals.size):
-                ci[i] = np.sqrt(np.max(eignvals) // eignvals[i])
+            # Dataframe containing eigenvalues and condition indicies
+            vis_df = pd.DataFrame({
+                "Eigenvalues": eignvals,
+                "Condition Indicies": ci
+            })
 
-            print("Condition Indicies:",ci)
+            """
+            fig, ax = plt.subplots()
+            fig.patch.set_visible(False)
+            ax.axis('off')
+            ax.axis('tight')
+
+            ax.table(cellText=vis_df.values, colLabels=vis_df.columns, loc='center')
+            fig.tight_layout()
+            """
 
             # Plot eigenvalues against their indexes
             np.arange(1,eignvals.size)
