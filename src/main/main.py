@@ -117,7 +117,14 @@ class DataVisPage():
             # Compute eigenvalues of dataset, first create symmetric matrix
             XTX = np.dot(np.transpose(feature_set), feature_set)
             eignvals = np.sqrt(np.linalg.eigvals(XTX))
-            print(eignvals)
+            print("eigenvalues:", eignvals)
+
+            # Compute condition indices for eigenvals
+            ci = np.arange(1,eignvals.size+1)
+            for i in range(eignvals.size):
+                ci[i] = np.sqrt(np.max(eignvals) // eignvals[i])
+
+            print("Condition Indicies:",ci)
 
             # Plot eigenvalues against their indexes
             np.arange(1,eignvals.size)
