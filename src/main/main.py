@@ -102,7 +102,7 @@ class DataVisPage():
                 cursor="hand2",
                 command=lambda:load_data_vis(self, Menu.boston_features)
                 ).pack()
-        
+
         # Button that displays data visualisation for Boston housing dataset when pressed
         tk.Button(self.data_vis_page,
                 text="Eignvaleus for Song Prediction Dataset",
@@ -143,22 +143,15 @@ class DataVisPage():
                 "Condition Indicies": ci
             })
 
-            """
-            fig, ax = plt.subplots()
-            fig.patch.set_visible(False)
-            ax.axis('off')
-            ax.axis('tight')
-
-            ax.table(cellText=vis_df.values, colLabels=vis_df.columns, loc='center')
-            fig.tight_layout()
-            """
-
             # Plot eigenvalues against their indexes
             np.arange(1,eignvals.size)
             plt.plot(np.arange(1,eignvals.size+1), eignvals)
             plt.xlabel("Component Number")
             plt.ylabel("EigenValues")
             plt.title("Scree Plot")
+
+            display(vis_df)
+
             plt.show()
 
 class Poc:
