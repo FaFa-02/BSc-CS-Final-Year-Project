@@ -139,6 +139,7 @@ class DataVisPage():
 
             # Dataframe containing eigenvalues and condition indicies
             vis_df = pd.DataFrame({
+                "Component": [x for x in range(1, eignvals.size+1)],
                 "Eigenvalues": eignvals,
                 "Condition Indicies": ci
             })
@@ -151,6 +152,7 @@ class DataVisPage():
             plt.title("Scree Plot")
 
             display(vis_df)
+            vis_df.to_excel("Eigenvalues_and_Condition_indicies.xlsx", index=None)
 
             plt.show()
 
