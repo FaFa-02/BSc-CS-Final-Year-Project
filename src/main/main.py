@@ -7,6 +7,8 @@ import pandas as pd
 from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
+import sys
+import logging
 from ridge_regression import RidgeRegressionClassifier
 
 
@@ -25,6 +27,9 @@ class Menu:
     song_data = pd.read_csv("Datasets/YearPredictionMSD.txt", header=None)
     song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
     song_labels = (song_data[song_data.columns[0]]).to_numpy()
+
+    pd.set_option('display.max_colwidth', None)
+    pd.set_option('display.max_columns', None)
 
     def __init__(self, parent):
         self.parent = parent
@@ -95,6 +100,16 @@ class DataVisPage():
 
         # Button that displays data visualisation for Boston housing dataset when pressed
         tk.Button(self.data_vis_page,
+                text="Describe Boston Housing Dataset",
+                font=("TkMenuFont", 14),
+                bg=BG_COLOUR,
+                fg="black",
+                cursor="hand2",
+                command=lambda:data_describe(self, Menu.boston_data)
+                ).pack()
+
+        # Button that displays data visualisation for Boston housing dataset when pressed
+        tk.Button(self.data_vis_page,
                 text="Eignvaleus for Boston Housing Dataset",
                 font=("TkMenuFont", 14),
                 bg=BG_COLOUR,
@@ -112,6 +127,13 @@ class DataVisPage():
                 cursor="hand2",
                 command=lambda:load_data_vis(self, Menu.song_features)
                 ).pack()
+
+        def data_describe(self, dataset):
+            #results = tk.Table(self.data_vis_page, text=dataset.describe())
+            #label.pack()
+            sys.stdout = open('output.txt', 'w')
+            print(dataset.describe())
+            sys.stdout.close()
 
         # Computes eigenvalues of a given dataset
         def comp_eigenvals(feature_set):

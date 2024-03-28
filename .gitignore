@@ -1,3 +1,4 @@
 **/__pycache__/
 .vscode
 src/Eigenvalues_and_Condition_indicies.xlsx
+src/output.txt
