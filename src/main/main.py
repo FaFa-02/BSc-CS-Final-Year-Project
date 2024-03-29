@@ -8,7 +8,7 @@ from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 import sys
-import logging
+import seaborn as sns
 from ridge_regression import RidgeRegressionClassifier
 
 
@@ -20,8 +20,9 @@ class Menu:
     # Read Boston Housing dataset and seperate features and labels
     col_names= ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
     boston_data = pd.read_csv("Datasets/boston_housing.csv", delimiter=r"\s+", names=col_names)
-    boston_features = (boston_data.drop('MEDV', axis=1)).to_numpy()
-    boston_labels = (boston_data['MEDV']).to_numpy()
+    boston_data_adjusted = boston_data[boston_data.MEDV != 50.00]
+    boston_features = (boston_data_adjusted.drop('MEDV', axis=1)).to_numpy()
+    boston_labels = (boston_data_adjusted['MEDV']).to_numpy()
 
     # Read song dataset and seperate features and labels
     song_data = pd.read_csv("Datasets/YearPredictionMSD.txt", header=None)
@@ -110,6 +111,16 @@ class DataVisPage():
 
         # Button that displays data visualisation for Boston housing dataset when pressed
         tk.Button(self.data_vis_page,
+                text="Correlation Matrix for Boston Housing Dataset",
+                font=("TkMenuFont", 14),
+                bg=BG_COLOUR,
+                fg="black",
+                cursor="hand2",
+                command=lambda:corr_matrix(self, Menu.boston_data_adjusted)
+                ).pack()
+
+        # Button that displays data visualisation for Boston housing dataset when pressed
+        tk.Button(self.data_vis_page,
                 text="Eignvaleus for Boston Housing Dataset",
                 font=("TkMenuFont", 14),
                 bg=BG_COLOUR,
@@ -134,6 +145,12 @@ class DataVisPage():
             sys.stdout = open('output.txt', 'w')
             print(dataset.describe())
             sys.stdout.close()
+
+        def corr_matrix(self, dataset):
+            plt.figure(figsize=(20, 10))
+            sns.heatmap(dataset.corr().abs(),  annot=True)
+            print(dataset.shape)
+            plt.show()
 
         # Computes eigenvalues of a given dataset
         def comp_eigenvals(feature_set):
