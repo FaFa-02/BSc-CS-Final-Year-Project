@@ -7,6 +7,7 @@ import pandas as pd
 from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 import sys
 import seaborn as sns
 from ridge_regression import RidgeRegressionClassifier
@@ -31,6 +32,7 @@ class Menu:
 
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_rows', None)
 
     def __init__(self, parent):
         self.parent = parent
@@ -155,9 +157,10 @@ class DataVisPage():
         # Computes eigenvalues of a given dataset
         def comp_eigenvals(feature_set):
             # Create symmetric matrix brfore compting eigenvalues
-            XTX = np.dot(np.transpose(feature_set), feature_set)
-
-            eigenvals = np.sqrt(np.linalg.eigvals(XTX))
+            #XTX = np.dot(np.transpose(feature_set), feature_set)
+            feature_set_std = StandardScaler().fit_transform(feature_set)
+            covariance_matrix = np.cov(np.transpose(feature_set_std))
+            eigenvals = np.linalg.eigvals(covariance_matrix)
 
             return np.round(eigenvals, decimals=2)
 
