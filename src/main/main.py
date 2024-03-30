@@ -30,6 +30,8 @@ class Menu:
     song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
     song_labels = (song_data[song_data.columns[0]]).to_numpy()
 
+    data_list = [[boston_data, boston_data_adjusted, boston_features], [], [song_data, song_data, song_features]]
+
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
@@ -40,22 +42,30 @@ class Menu:
         self.menu.grid(row=0, column=0)
         self.menu.pack_propagate(False)
 
-        # menu frame widgets
+        # Title for data vis menus
         tk.Label(self.menu,
-            text="Ridge & Lasso Regression Menu",
+            text="Data Visualisation Menu",
             bg=BG_COLOUR,
             fg="black",
             font=("TkMenuFont", 14)
             ).pack()
 
-        # Opens the data visualisation window when pressed
+        # Opens the data visualisation menu window
         tk.Button(self.menu,
             text="Data Visualisation",
-            font=("TkMenuFont", 20),
+            font=("TkMenuFont", 14),
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
             command=lambda:load_data_vis_page(self)
+            ).pack()
+
+        # Title for regression menus
+        tk.Label(self.menu,
+            text="Ridge & KNN Regression Menu",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
             ).pack()
 
         # Opens POC menu window when pressed
@@ -78,6 +88,11 @@ class Menu:
             command=lambda:load_ridge(self)
             ).pack()
 
+        # Opens new data visualisation window
+        def load_data_vis_page(self):
+            self.newWindow = tk.Toplevel(self.parent)
+            self.app = DataVisPage(self.newWindow)
+
         # Opens new POC window
         def load_poc(self):
             self.newWindow = tk.Toplevel(self.parent)
@@ -88,11 +103,6 @@ class Menu:
             self.newWindow = tk.Toplevel(self.parent)
             self.app = RidgePage(self.newWindow) 
 
-        # Opens new data visualisation window
-        def load_data_vis_page(self):
-            self.newWindow = tk.Toplevel(self.parent)
-            self.app = DataVisPage(self.newWindow)
-
 class DataVisPage():
     """Class representing the data visualisation program window"""
     def __init__(self, parent):
@@ -101,44 +111,55 @@ class DataVisPage():
         self.data_vis_page.grid(row=0, column=0)
         self.data_vis_page.pack_propagate(False)
 
-        # Button that displays data visualisation for Boston housing dataset when pressed
+        # Title for choosing dataset
+        tk.Label(self.data_vis_page,
+            text="Select Dataset to Analyse",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        var = tk.IntVar()
+        tk.Radiobutton(self.data_vis_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
+        tk.Radiobutton(self.data_vis_page, text='Dataset', variable=var, value=1).pack(anchor=tk.W)
+        tk.Radiobutton(self.data_vis_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+
+        # Title for data vis options
+        tk.Label(self.data_vis_page,
+            text="Visualisation Methods",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Button that displays describe function for selected dataset when pressed
         tk.Button(self.data_vis_page,
-                text="Describe Boston Housing Dataset",
+                text="Describe Function",
                 font=("TkMenuFont", 14),
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:data_describe(self, Menu.boston_data)
+                command=lambda:data_describe(self, (Menu.data_list)[var.get()][0])
                 ).pack()
 
-        # Button that displays data visualisation for Boston housing dataset when pressed
+        # Button that displays correlation matrix for selected dataset when pressed
         tk.Button(self.data_vis_page,
-                text="Correlation Matrix for Boston Housing Dataset",
+                text="Correlation Matrix",
                 font=("TkMenuFont", 14),
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:corr_matrix(self, Menu.boston_data_adjusted)
+                command=lambda:corr_matrix(self, (Menu.data_list)[var.get()][1])
                 ).pack()
 
-        # Button that displays data visualisation for Boston housing dataset when pressed
+        # Button that displays data visualisation for selected dataset when pressed
         tk.Button(self.data_vis_page,
-                text="Eignvaleus for Boston Housing Dataset",
+                text="Eignvaleus & Condition Indices",
                 font=("TkMenuFont", 14),
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:load_data_vis(self, Menu.boston_features)
-                ).pack()
-
-        # Button that displays data visualisation for Boston housing dataset when pressed
-        tk.Button(self.data_vis_page,
-                text="Eignvaleus for Song Prediction Dataset",
-                font=("TkMenuFont", 14),
-                bg=BG_COLOUR,
-                fg="black",
-                cursor="hand2",
-                command=lambda:load_data_vis(self, Menu.song_features)
+                command=lambda:load_data_vis(self, (Menu.data_list)[var.get()][2])
                 ).pack()
 
         def data_describe(self, dataset):
