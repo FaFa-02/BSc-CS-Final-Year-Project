@@ -195,7 +195,7 @@ class DataVisPage():
 
             # Plot eigenvalues against their indexes
             np.arange(1,eignvals.size)
-            plt.plot(np.arange(1,eignvals.size+1), eignvals)
+            plt.plot(np.arange(1,eignvals.size+1), eignvals, '-o')
             plt.xlabel("Component Number")
             plt.ylabel("EigenValues")
             plt.title("Scree Plot")
