@@ -163,11 +163,8 @@ class DataVisPage():
                 ).pack()
 
         def data_describe(self, dataset):
-            #results = tk.Table(self.data_vis_page, text=dataset.describe())
-            #label.pack()
-            sys.stdout = open('output.txt', 'w')
-            print(dataset.describe())
-            sys.stdout.close()
+            with open("output.txt", "w") as text_file:
+                text_file.write(dataset.describe().to_string())
 
         def corr_matrix(self, dataset):
             plt.figure(figsize=(20, 10))
