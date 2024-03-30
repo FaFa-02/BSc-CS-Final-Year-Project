@@ -157,9 +157,17 @@ class DataVisPage():
         # Computes eigenvalues of a given dataset
         def comp_eigenvals(feature_set):
             # Create symmetric matrix brfore compting eigenvalues
-            feature_set_std = StandardScaler().fit_transform(feature_set)
-            covariance_matrix = np.cov(np.transpose(feature_set_std))
-            eigenvals = np.linalg.eigvals(covariance_matrix)
+            for i in range((feature_set.T).shape[0]):
+                col = feature_set.T[i]
+                feature_set.T[i] = col - col.mean()
+            XTX = np.matmul(np.transpose(feature_set), feature_set)
+            cov_m = XTX / (feature_set.shape[0] - 1)
+            eigenvals = np.sqrt(np.linalg.eigvals(cov_m))
+
+            #feature_set_std = StandardScaler().fit_transform(feature_set)
+
+            #covariance_matrix = np.cov(np.transpose(feature_set_std))
+            #eigenvals = np.linalg.eigvals(covariance_matrix)
 
             return np.round(eigenvals, decimals=4)
 
