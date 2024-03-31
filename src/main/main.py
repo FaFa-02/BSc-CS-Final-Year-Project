@@ -25,12 +25,17 @@ class Menu:
     boston_features = (boston_data_adjusted.drop('MEDV', axis=1)).to_numpy()
     boston_labels = (boston_data_adjusted['MEDV']).to_numpy()
 
+    # Read student dataset and seperate features and labels
+    student_data = pd.read_csv("Datasets/student-por.csv", delimiter=';')
+    student_features = (student_data.drop('G3', axis=1)).to_numpy()
+    student_labels = (student_data['G3']).to_numpy()
+
     # Read song dataset and seperate features and labels
     song_data = pd.read_csv("Datasets/YearPredictionMSD.txt", header=None)
     song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
     song_labels = (song_data[song_data.columns[0]]).to_numpy()
 
-    data_list = [[boston_data, boston_data_adjusted, boston_features], [], [song_data, song_data, song_features]]
+    data_list = [[boston_data, boston_data_adjusted, boston_features], [student_data, student_data, student_features], [song_data, song_data, song_features]]
 
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
