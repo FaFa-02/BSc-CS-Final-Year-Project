@@ -10,27 +10,31 @@ class RidgeRegressionClassifier():
     def __init__(self, penalty):
         self.X_train = None
         self.y_train = None
+        self.beta_ridge_hat = None
         self.m = None
         self.n = None
         self.penalty = penalty
 
     def fit(self, X_train, y_train):
         """Fits the regression model to the training data."""
-        self.X_train = X_train
+        # Add intercept column of 1s to feature set
+        self.X_train = np.c_[np.ones((X_train.shape[0],1)), X_train]
         self.y_train = y_train
 
         # Stores sizes of the training set matrix
-        self.m = X_train.shape[0]
-        self.n = X_train.shape[1]
+        self.m = self.X_train.shape[0]
+        self.n = self.X_train.shape[1]
 
         # Identity matrix needed for beta_ridge_hat computation
         I = np.identity(self.n)
 
-        self.beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + self.penalty * I)).dot(self.X_train.T)).dot(y_train)
+        self.beta_ridge_hat = ((inv((self.X_train.T).dot(self.X_train) + np.multiply(self.penalty, I) )).dot(self.X_train.T)).dot(self.y_train)
         print("beta hat values:",self.beta_ridge_hat)
 
     def predict(self, new_dataset):
         """Predicts values based on matrix of features from new samples."""
+        # Add intercept column of 1s to feature set
+        new_dataset = np.c_[np.ones((new_dataset.shape[0],1)), new_dataset]
         predictions = np.zeros(new_dataset.shape[0])
 
         for i in range(new_dataset.shape[0]):
