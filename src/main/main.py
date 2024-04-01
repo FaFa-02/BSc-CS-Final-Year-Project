@@ -35,7 +35,9 @@ class Menu:
     song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
     song_labels = (song_data[song_data.columns[0]]).to_numpy()
 
-    data_list = [[boston_data, boston_data_adjusted, boston_features], [student_data, student_data, student_features], [song_data, song_data, song_features]]
+    data_list = [[boston_data, boston_data_adjusted, boston_features, boston_labels],
+                 [student_data, student_data, student_features, student_labels],
+                 [song_data, song_data, song_features,song_labels]]
 
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
@@ -73,16 +75,6 @@ class Menu:
             font=("TkMenuFont", 14)
             ).pack()
 
-        # Opens POC menu window when pressed
-        tk.Button(self.menu,
-            text="Proof of Concept",
-            font=("TkMenuFont", 20),
-            bg=BG_COLOUR,
-            fg="black",
-            cursor="hand2",
-            command=lambda:load_poc(self)
-            ).pack()
-
         # Opens ridge regression menu window when pressed
         tk.Button(self.menu,
             text="Ridge Regression Model",
@@ -91,6 +83,16 @@ class Menu:
             fg="black",
             cursor="hand2",
             command=lambda:load_ridge(self)
+            ).pack()
+        
+        # Opens POC menu window when pressed
+        tk.Button(self.menu,
+            text="Proof of Concept",
+            font=("TkMenuFont", 20),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:load_poc(self)
             ).pack()
 
         # Opens new data visualisation window
@@ -125,6 +127,7 @@ class DataVisPage():
             ).pack()
 
         var = tk.IntVar()
+        # Radio buttons for choosing dataset
         tk.Radiobutton(self.data_vis_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.data_vis_page, text='Dataset', variable=var, value=1).pack(anchor=tk.W)
         tk.Radiobutton(self.data_vis_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
@@ -330,14 +333,25 @@ class RidgePage:
         self.ridge_page.grid(row=0, column=0)
         self.ridge_page.pack_propagate(False)
 
-        # Split dataset into training and test sets in preparation for the Ridge Regression model
-        X_train, X_test, y_train, y_test = train_test_split(Menu.boston_features, Menu.boston_labels, random_state=0)
-
         # Model parameters
         self.alpha = 0
 
+        # Title for choosing dataset
         tk.Label(self.ridge_page,
-            text="Ridge Regression on Boston Housing Problem",
+            text="Select Dataset to Analyse",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Radio buttons for choosing dataset
+        var = tk.IntVar()
+        tk.Radiobutton(self.ridge_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
+        tk.Radiobutton(self.ridge_page, text='Dataset', variable=var, value=1).pack(anchor=tk.W)
+        tk.Radiobutton(self.ridge_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+
+        tk.Label(self.ridge_page,
+            text="Set Ridge Regression Parameters",
             bg=BG_COLOUR,
             fg="black",
             font=("TkMenuFont", 14)
@@ -369,7 +383,7 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_ridge(self, self.alpha, "House Prices")
+            command=lambda:predict_ridge(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3],"House Prices")
             ).pack()
 
         # Takes value from text field and updates alpha variable with it
@@ -377,7 +391,11 @@ class RidgePage:
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, a, label_name):
+        def predict_ridge(self, a, data_features, data_labels,label_name):
+
+            # Split dataset into training and test sets in preparation for the Ridge Regression model
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
+
             # Apply normalisation to dataset before predicting
             std_scaler = StandardScaler()
             std_scaler.fit(X_train)
