@@ -378,12 +378,18 @@ class RidgePage:
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_ridge(self, a, label_name):
+            # Apply normalisation to dataset before predicting
+            std_scaler = StandardScaler()
+            std_scaler.fit(X_train)
+            X_train_scaled = std_scaler.transform(X_train)
+            X_test_scaled = std_scaler.transform(X_test)
+
             # Initialized and fit training data to Ridge Regression model
             ridge = RidgeRegressionClassifier(a)
-            ridge.fit(X_train, y_train)
+            ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
-            ridge.score(X_test, y_test, label_name)
+            ridge.score(X_test_scaled, y_test, label_name)
 
 def main():
     """Class representing the root window"""
