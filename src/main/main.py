@@ -10,10 +10,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import sys
 import seaborn as sns
+import random
 from ridge_regression import RidgeRegressionClassifier
 
 
 BG_COLOUR = "#fff"
+
+RAND_STATES = [102388621, 320893374, 564240724, 173580668, 142586193]
 
 class Menu:
     """Class representing the main menu window"""
@@ -383,7 +386,17 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_ridge(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3],"House Prices")
+            command=lambda:predict_ridge(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3], "House Prices", 0)
+            ).pack()
+
+        # Button to run model on test data with 5 random states and output mean score
+        tk.Button(self.ridge_page,
+            text="Predict test set with errors",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:predict_ridge_errors(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3],"House Prices", RAND_STATES)
             ).pack()
 
         # Takes value from text field and updates alpha variable with it
@@ -391,10 +404,10 @@ class RidgePage:
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, a, data_features, data_labels,label_name):
+        def predict_ridge(self, a, data_features, data_labels, label_name, rnd_state):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
 
             # Apply normalisation to dataset before predicting
             std_scaler = StandardScaler()
@@ -407,7 +420,18 @@ class RidgePage:
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
-            ridge.score(X_test_scaled, y_test, label_name)
+            return ridge.score(X_test_scaled, y_test, label_name)
+
+        # Instantiates and trains model to dataset, then executes on test set and output results
+        def predict_ridge_errors(self, a, data_features, data_labels, label_name, rnd_state_arr):
+            acc_scores_arr = []
+
+            for i in RAND_STATES:
+                acc_scores_arr.append(predict_ridge(self, a, data_features, data_labels, label_name, i))
+
+            print("scores:",acc_scores_arr)
+            print("mean score:",np.mean(acc_scores_arr))
+            
 
 def main():
     """Class representing the root window"""
