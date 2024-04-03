@@ -40,7 +40,6 @@ class RidgeRegressionClassifier():
         for i in range(new_dataset.shape[0]):
             predictions[i] = new_dataset[i].dot(self.beta_ridge_hat)
 
-        print("prediction shape:",predictions.shape)
         return predictions
 
     def tss(self, y):
@@ -85,3 +84,5 @@ class RidgeRegressionClassifier():
         plt.ylabel("Predicted " + label_name)
         plt.title("Actual vs Predicted " + label_name)
         plt.show()
+
+        return r2_score
