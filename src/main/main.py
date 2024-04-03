@@ -30,14 +30,14 @@ class Menu:
     student_features = (student_data.drop('G3', axis=1)).to_numpy()
     student_labels = (student_data['G3']).to_numpy()
 
-    # Read song dataset and seperate features and labels
-    song_data = pd.read_csv("Datasets/YearPredictionMSD.txt", header=None)
-    song_features = (song_data.drop(columns=song_data.columns[0], axis=1)).to_numpy()
-    song_labels = (song_data[song_data.columns[0]]).to_numpy()
+    # Read conductor dataset and seperate features and labels
+    conductivity_data = pd.read_csv("Datasets/con_train.csv")
+    conductivity_features = (conductivity_data.drop('critical_temp', axis=1)).to_numpy()
+    conductivity_labels = (conductivity_data['critical_temp']).to_numpy()
 
     data_list = [[boston_data, boston_data_adjusted, boston_features, boston_labels],
                  [student_data, student_data, student_features, student_labels],
-                 [song_data, song_data, song_features,song_labels]]
+                 [conductivity_data, conductivity_data, conductivity_features,conductivity_labels]]
 
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
