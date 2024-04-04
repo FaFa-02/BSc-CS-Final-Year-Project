@@ -38,6 +38,7 @@ class Menu:
     conductivity_features = (conductivity_data.drop('critical_temp', axis=1)).to_numpy()
     conductivity_labels = (conductivity_data['critical_temp']).to_numpy()
 
+
     data_list = [[boston_data, boston_data_adjusted, boston_features, boston_labels],
                  [student_data, student_data, student_features, student_labels],
                  [conductivity_data, conductivity_data, conductivity_features,conductivity_labels]]
@@ -175,7 +176,7 @@ class DataVisPage():
 
         def data_describe(self, dataset):
             with open("output.txt", "w") as text_file:
-                text_file.write(dataset.describe().to_string())
+                text_file.write(dataset.describe(include='all').to_string())
 
         def corr_matrix(self, dataset):
             plt.figure(figsize=(20, 10))
