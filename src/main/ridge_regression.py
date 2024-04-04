@@ -62,7 +62,7 @@ class RidgeRegressionClassifier():
 
         return R2
 
-    def score(self, X_new, y_true, label_name):
+    def score(self, X_new, y_true, graph=None):
         """Predicts values and computes R Squared score for said predictions on real targets"""
         y_pred = self.predict(X_new)
 
@@ -75,14 +75,15 @@ class RidgeRegressionClassifier():
         smallest_label = min(np.amin(y_true), np.amin(y_pred))
 
         # Creates a plot of the true vs predicted target values
-        plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
-        plt.legend(["Predicted Values"], title=f"R2 score: {r2_score:.3f} \nAlpha: {self.penalty}", alignment='left')
-        plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
-        plt.xlim(smallest_label, largest_label)
-        plt.ylim(smallest_label, largest_label)
-        plt.xlabel("True " + label_name)
-        plt.ylabel("Predicted " + label_name)
-        plt.title("Actual vs Predicted " + label_name)
-        plt.show()
+        if graph is True:
+            plt.scatter(y_true, y_pred, label="True", marker="*", s=30)
+            plt.legend(["Predicted Values"], title=f"R2 score: {r2_score:.3f} \nAlpha: {self.penalty}", alignment='left')
+            plt.axline((0,0), (1,1), color='red', label='Ideal Calibration')
+            plt.xlim(smallest_label, largest_label)
+            plt.ylim(smallest_label, largest_label)
+            plt.xlabel("True Target")
+            plt.ylabel("Predicted Target")
+            plt.title("Actual vs Predicted Target")
+            plt.show()
 
         return r2_score
