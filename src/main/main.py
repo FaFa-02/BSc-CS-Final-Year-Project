@@ -386,7 +386,7 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_ridge(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3], "House Prices", 0)
+            command=lambda:predict_ridge(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3], 0)
             ).pack()
 
         # Button to run model on test data with 5 random states and output mean score
@@ -396,7 +396,7 @@ class RidgePage:
             bg=BG_COLOUR,
             fg="black",
             cursor="hand2",
-            command=lambda:predict_ridge_errors(self, self.alpha, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3],"House Prices", RAND_STATES)
+            command=lambda:predict_ridge_errors(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3])
             ).pack()
 
         # Takes value from text field and updates alpha variable with it
@@ -404,7 +404,7 @@ class RidgePage:
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, a, data_features, data_labels, label_name, rnd_state):
+        def predict_ridge(self, data_features, data_labels, rnd_state):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
@@ -416,18 +416,18 @@ class RidgePage:
             X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to Ridge Regression model
-            ridge = RidgeRegressionClassifier(a)
+            ridge = RidgeRegressionClassifier(self.alpha)
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
-            return ridge.score(X_test_scaled, y_test, label_name)
+            return ridge.score(X_test_scaled, y_test, True)
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge_errors(self, a, data_features, data_labels, label_name, rnd_state_arr):
+        def predict_ridge_errors(self, data_features, data_labels):
             acc_scores_arr = []
 
             for i in RAND_STATES:
-                acc_scores_arr.append(predict_ridge(self, a, data_features, data_labels, label_name, i))
+                acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i))
 
             print("scores:",acc_scores_arr)
             print("mean score:",np.mean(acc_scores_arr))
