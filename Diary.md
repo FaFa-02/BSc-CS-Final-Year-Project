@@ -86,3 +86,21 @@ I have created a simple proof of concept (POC) program that demonstrates Ridge R
 Interim Report Git Release-1
 
 Have completed first version of my FYP. It includes my Interim Report along with an implementation of the Ridge Regression algorithm form scratch. The code also runs on a smaller dataset as a proof of concept to show algorithm in action and to serve as point where I can branch off in order to expand the project. An official release has been made on git where the candidate release branch has been created, worked on, and tagged with a version number. Also a CHANGELOD.md file was created and updated.
+
+
+10/02/2024
+Report Progress (Ridge Estimator)
+
+Have added subsection to final report explaining how I derived the Ridge Regression estimator that I have used in my program to find the optimal model coefficients. In this section I show the mathematical proof of how I got to my final result, and I also explain what the result means and its significance. I also had to go back into some other sections to introduce the concept of matrix notation, as this was used extensively when finding the estimator.
+
+
+02/03/2024
+Programming Progress (GUI and score)
+
+I have made many advancements this last week in regard to the programming part of my project. I have constructed a GUI for my project where a user can interact with both the proof-of-concept program and the ridge regression model trained on the Boston housing problem dataset. These programs can take input from the user of what alpha values they want to use and using it when predicting their values on the test set. The results information is displayed as a graph where the predicted data is plotted against the true and predicted values.
+
+
+09/03/2024
+Supervisor Meeting & Report Progress
+
+I had a very useful meeting with my supervisor recently where I got a clear idea of what my next steps should be in order to complete my report. Until now I have managed to program and explain theoretical most of the tools that I will need to gather my data. Before I was not sure what steps I should take next, but now I created a plan for what my next chapters, Method and Experiment, should include. I have defined the sections that I will need to discuss within each chapter and now I will get started on filling out this structure with words and explanations.
