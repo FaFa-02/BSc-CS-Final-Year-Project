@@ -429,9 +429,8 @@ class RidgePage:
             for i in RAND_STATES:
                 acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None))
 
-            print("scores:",acc_scores_arr)
             print("mean score:",np.mean(acc_scores_arr))
-            
+            print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
 def main():
     """Class representing the root window"""
