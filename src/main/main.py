@@ -30,6 +30,8 @@ class Menu:
 
     # Read student dataset and seperate features and labels
     student_data = pd.read_csv("Datasets/student-por.csv", delimiter=';')
+    student_data = student_data.drop(['school', 'reason'], axis=1)
+    student_data_adjusted = pd.get_dummies(student_data, drop_first=True)
     student_features = (student_data.drop('G3', axis=1)).to_numpy()
     student_labels = (student_data['G3']).to_numpy()
 
@@ -46,6 +48,9 @@ class Menu:
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
+
+    print("head:",student_data_adjusted.head(5))
+    print("shape:",student_data_adjusted.shape)
 
     def __init__(self, parent):
         self.parent = parent
