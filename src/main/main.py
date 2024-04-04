@@ -404,7 +404,7 @@ class RidgePage:
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, data_features, data_labels, rnd_state):
+        def predict_ridge(self, data_features, data_labels, rnd_state, graph=True):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
@@ -420,14 +420,14 @@ class RidgePage:
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
-            return ridge.score(X_test_scaled, y_test, True)
+            return ridge.score(X_test_scaled, y_test, graph)
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_ridge_errors(self, data_features, data_labels):
             acc_scores_arr = []
 
             for i in RAND_STATES:
-                acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i))
+                acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None))
 
             print("scores:",acc_scores_arr)
             print("mean score:",np.mean(acc_scores_arr))
