@@ -437,7 +437,7 @@ class RidgePage:
             X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to Ridge Regression model
-            ridge = RidgeRegression(a)
+            ridge = RidgeRegression(self.alpha)
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
