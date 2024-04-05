@@ -462,7 +462,7 @@ class KNNPage:
         self.knn_page.pack_propagate(False)
 
         # Model parameters
-        self.n = 0
+        self.n = 3
 
         # Title for choosing dataset
         tk.Label(self.knn_page,
@@ -492,7 +492,7 @@ class KNNPage:
                 width=5
                 )
         n_input.pack()
-        n_input.insert(tk.END, 0)
+        n_input.insert(tk.END, 3)
 
         # Button to update n value with user inputed data
         tk.Button(self.knn_page,
@@ -526,7 +526,7 @@ class KNNPage:
 
         # Takes value from text field and updates n variable with it
         def update_n(self):
-            self.n = float(n_input.get("1.0", "end-1c"))
+            self.n = int(n_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_knn(self, data_features, data_labels, rnd_state, graph=True):
