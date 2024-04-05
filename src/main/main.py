@@ -31,9 +31,9 @@ class Menu:
     # Read student dataset and seperate features and labels
     student_data = pd.read_csv("Datasets/student-por.csv", delimiter=';')
     student_data = student_data.drop(['school', 'reason'], axis=1)
-    student_data_adjusted = pd.get_dummies(student_data, drop_first=True)
-    student_features = (student_data.drop('G3', axis=1)).to_numpy()
-    student_labels = (student_data['G3']).to_numpy()
+    student_data_adjusted = pd.get_dummies(student_data, drop_first=True, dtype=int)
+    student_features = (student_data_adjusted.drop('G3', axis=1)).to_numpy()
+    student_labels = (student_data_adjusted['G3']).to_numpy()
 
     # Read conductor dataset and seperate features and labels
     conductivity_data = pd.read_csv("Datasets/con_train.csv")
@@ -42,7 +42,7 @@ class Menu:
 
 
     data_list = [[boston_data, boston_data_adjusted, boston_features, boston_labels],
-                 [student_data, student_data, student_features, student_labels],
+                 [student_data, student_data_adjusted, student_features, student_labels],
                  [conductivity_data, conductivity_data, conductivity_features,conductivity_labels]]
 
     pd.set_option('display.max_colwidth', None)
