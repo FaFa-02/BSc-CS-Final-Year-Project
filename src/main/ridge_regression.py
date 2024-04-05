@@ -4,7 +4,7 @@ from numpy.linalg import inv
 import matplotlib.pyplot as plt
 
 """Module providing a Ridge Regression classifier with appropriate functions"""
-class RidgeRegressionClassifier():
+class RidgeRegression():
     """Class representing a Ridge Regression classifier"""
 
     def __init__(self, penalty):
