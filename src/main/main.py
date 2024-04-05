@@ -4,15 +4,15 @@ import tkinter as tk
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import sys
+import seaborn as sns
 from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-import sys
-import seaborn as sns
-import random
+from sklearn.preprocessing import MinMaxScaler
 from ridge_regression import RidgeRegressionClassifier
-
+from k_nearest_neighbors import KNearestNeighbors
 
 BG_COLOUR = "#fff"
 
@@ -94,6 +94,16 @@ class Menu:
             command=lambda:load_ridge(self)
             ).pack()
         
+        # Opens KNN regression menu window when pressed
+        tk.Button(self.menu,
+            text="K Nearest Neighbours Regression Model",
+            font=("TkMenuFont", 20),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:load_knn(self)
+            ).pack()
+        
         # Opens POC menu window when pressed
         tk.Button(self.menu,
             text="Proof of Concept",
@@ -109,15 +119,20 @@ class Menu:
             self.newWindow = tk.Toplevel(self.parent)
             self.app = DataVisPage(self.newWindow)
 
-        # Opens new POC window
-        def load_poc(self):
-            self.newWindow = tk.Toplevel(self.parent)
-            self.app = Poc(self.newWindow)
-
         # Opens new ridge regression model window
         def load_ridge(self):
             self.newWindow = tk.Toplevel(self.parent)
             self.app = RidgePage(self.newWindow) 
+
+        # Opens new ridge regression model window
+        def load_knn(self):
+            self.newWindow = tk.Toplevel(self.parent)
+            self.app = KNNPage(self.newWindow)
+
+        # Opens new POC window
+        def load_poc(self):
+            self.newWindow = tk.Toplevel(self.parent)
+            self.app = Poc(self.newWindow)
 
 class DataVisPage():
     """Class representing the data visualisation program window"""
@@ -138,7 +153,7 @@ class DataVisPage():
         var = tk.IntVar()
         # Radio buttons for choosing dataset
         tk.Radiobutton(self.data_vis_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
-        tk.Radiobutton(self.data_vis_page, text='Dataset', variable=var, value=1).pack(anchor=tk.W)
+        tk.Radiobutton(self.data_vis_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
         tk.Radiobutton(self.data_vis_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
 
         # Title for data vis options
@@ -356,7 +371,7 @@ class RidgePage:
         # Radio buttons for choosing dataset
         var = tk.IntVar()
         tk.Radiobutton(self.ridge_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
-        tk.Radiobutton(self.ridge_page, text='Dataset', variable=var, value=1).pack(anchor=tk.W)
+        tk.Radiobutton(self.ridge_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
         tk.Radiobutton(self.ridge_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
 
         tk.Label(self.ridge_page,
@@ -434,6 +449,110 @@ class RidgePage:
 
             for i in RAND_STATES:
                 acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None))
+
+            print("mean score:",np.mean(acc_scores_arr))
+            print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
+
+class KNNPage:
+    """Class representing the KNN model program window"""
+    def __init__(self, parent):
+        self.parent = parent
+        self.knn_page = tk.Frame(self.parent, width=500, height=300, bg=BG_COLOUR)
+        self.knn_page.grid(row=0, column=0)
+        self.knn_page.pack_propagate(False)
+
+        # Model parameters
+        self.n = 0
+
+        # Title for choosing dataset
+        tk.Label(self.knn_page,
+            text="Select Dataset to Analyse",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Radio buttons for choosing dataset
+        var = tk.IntVar()
+        tk.Radiobutton(self.knn_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
+        tk.Radiobutton(self.knn_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
+        tk.Radiobutton(self.knn_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+
+        tk.Label(self.knn_page,
+            text="Set KNN Regression Parameters",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Text field to get user inputed value for n
+        n_input = tk.Text(self.knn_page,
+                bg="#EEDFCC",
+                height=1,
+                width=5
+                )
+        n_input.pack()
+        n_input.insert(tk.END, 0)
+
+        # Button to update n value with user inputed data
+        tk.Button(self.knn_page,
+            text="Select n neighbours",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:update_n(self)
+            ).pack()
+
+        # Button to run model on test data and output results
+        tk.Button(self.knn_page,
+            text="Predict test set",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:predict_knn(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3], 0)
+            ).pack()
+
+        # Button to run model on test data with 5 random states and output mean score
+        tk.Button(self.knn_page,
+            text="Predict test set with errors",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:predict_knn_errors(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3])
+            ).pack()
+
+        # Takes value from text field and updates n variable with it
+        def update_n(self):
+            self.n = float(n_input.get("1.0", "end-1c"))
+
+        # Instantiates and trains model to dataset, then executes on test set and output results
+        def predict_knn(self, data_features, data_labels, rnd_state, graph=True):
+
+            # Split dataset into training and test sets in preparation for the Ridge Regression model
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
+
+            # Apply normalisation to dataset before predicting
+            minmax_scaler = MinMaxScaler()
+            minmax_scaler.fit(X_train)
+            X_train_scaled = minmax_scaler.transform(X_train)
+            X_test_scaled = minmax_scaler.transform(X_test)
+
+            # Initialized and fit training data to KNN Regression model
+            knn = KNearestNeighbors(self.n)
+            knn.fit(X_train_scaled, y_train)
+
+            # Predict values and output their score and plot predicted vs true points
+            return knn.score(X_test_scaled, y_test, graph)
+
+        # Instantiates and trains model to dataset, then executes on test set and output results
+        def predict_knn_errors(self, data_features, data_labels):
+            acc_scores_arr = []
+
+            for i in RAND_STATES:
+                acc_scores_arr.append(predict_knn(self, data_features, data_labels, i, None))
 
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
