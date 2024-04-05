@@ -15,24 +15,22 @@ class KNearestNeighbors():
 
     def predict(self, new_dataset):
         """Predicts new samples using KNN regression algorithm"""
-        distances = np.zeros((new_dataset.shape[0], self.X_train.shape[0]))
-        y_pred_index = np.zeros((new_dataset.shape[0], self.X_train.shape[0]))
-        y_pred = np.zeros(new_dataset.shape[0])
+        y_pred = np.array([])
 
         for i in range(new_dataset.shape[0]):
-
+            distance = np.array([])
+            y_pred_index = np.array([])
             for j in range(self.X_train.shape[0]):
                 # Computes distance of new and training sample
                 current_dist = np.linalg.norm(new_dataset[i] - self.X_train[j])
 
                 # Inserts distance and sample index into sorted array
-                sorted_index = np.searchsorted(distances, current_dist)
-                distances[i, sorted_index] = current_dist
-                y_pred_index[i, np.searchsorted(distances, current_dist)] = self.y_train[j]
-
-        # Computes mean of n closest neighbours
-        for i in range(distances.shape[0]):
-            y_pred[i] = np.mean(y_pred_index[0:self.n])
+                sorted_index = np.searchsorted(distance, current_dist)
+                distance =  np.insert(distance, sorted_index, current_dist, axis=None)
+                y_pred_index = np.insert(y_pred_index, sorted_index, self.y_train[j], axis=None)
+            
+            # Compute average of n neighbours and adds to prediction output
+            y_pred = np.append(y_pred, np.mean(y_pred_index[0:self.n]), axis=None)
 
         print(y_pred)
 
