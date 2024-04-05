@@ -10,7 +10,6 @@ from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
 from ridge_regression import RidgeRegressionClassifier
 from k_nearest_neighbors import KNearestNeighbors
 
@@ -533,12 +532,12 @@ class KNNPage:
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
-
+            
             # Apply normalisation to dataset before predicting
-            minmax_scaler = MinMaxScaler()
-            minmax_scaler.fit(X_train)
-            X_train_scaled = minmax_scaler.transform(X_train)
-            X_test_scaled = minmax_scaler.transform(X_test)
+            std_scaler = StandardScaler()
+            std_scaler.fit(X_train)
+            X_train_scaled = std_scaler.transform(X_train)
+            X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to KNN Regression model
             knn = KNearestNeighbors(self.n)
