@@ -10,7 +10,8 @@ from IPython.display import display
 from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from ridge_regression import RidgeRegressionClassifier
+import seaborn as sns
+from ridge_regression import RidgeRegression
 from k_nearest_neighbors import KNearestNeighbors
 
 BG_COLOUR = "#fff"
@@ -436,7 +437,7 @@ class RidgePage:
             X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to Ridge Regression model
-            ridge = RidgeRegressionClassifier(self.alpha)
+            ridge = RidgeRegression(a)
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
