@@ -4,3 +4,7 @@ class KNearestNeighbors():
 
     def __init__(self, n = 3):
         self.n = n
+
+    def fit(self, X_train, y_train):
+        self.X_train = X_train
+        self.y_train = y_train
