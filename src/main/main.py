@@ -96,7 +96,7 @@ class Menu:
         
         # Opens KNN regression menu window when pressed
         tk.Button(self.menu,
-            text="K Nearest Neighbours Regression Model",
+            text="KNN Regression Model",
             font=("TkMenuFont", 20),
             bg=BG_COLOUR,
             fg="black",
