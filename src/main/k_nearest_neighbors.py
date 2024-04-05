@@ -28,14 +28,14 @@ class KNearestNeighbors():
                 sorted_index = np.searchsorted(distance, current_dist)
                 distance =  np.insert(distance, sorted_index, current_dist, axis=None)
                 y_pred_index = np.insert(y_pred_index, sorted_index, self.y_train[j], axis=None)
-            
+
             # Compute average of n neighbours and adds to prediction output
             y_pred = np.append(y_pred, np.mean(y_pred_index[0:self.n]), axis=None)
 
         print(y_pred)
 
         return y_pred
-    
+
     def tss(self, y):
         """Calculates total sum of squares from a dataset"""
         y_mean = np.mean(y)
