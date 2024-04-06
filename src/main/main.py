@@ -11,6 +11,7 @@ from sklearn.datasets import load_linnerud
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import Ridge
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
 from ridge_regression import RidgeRegression
@@ -472,16 +473,16 @@ class RidgePage:
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
+        # Returns optimal hyperparameter for knn model by using cross validation
         def hyperparam_tunning(self, data_features, data_labels):
 
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
 
             best_score = 0
-            #for alpha in [0.001, 0.01, 0.1, 1, 10, 100]:
             for alpha in [1e-15, 1e-10, 1e-8, 1e-4, 1e-3,1e-2, 1, 5, 10, 100, 1000]:
                 # For each possible parameter train a ridge model
                 ridge = Ridge(alpha=alpha)
-                #perform cross-validation
+                # Perform cross-validation
                 scores = cross_val_score(ridge, X_train, y_train, cv=5)
                 score = np.mean(scores)
                 # Store best score from cross-val of all possibilities
@@ -547,6 +548,23 @@ class KNNPage:
             command=lambda:update_n(self)
             ).pack()
 
+        # Button to run cross val and find optimal parameters
+        tk.Button(self.knn_page,
+            text="Optimal parameters (cross-val)",
+            font=("TkMenuFont", 8),
+            bg=BG_COLOUR,
+            fg="black",
+            cursor="hand2",
+            command=lambda:hyperparam_tunning(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3])
+            ).pack()
+
+        tk.Label(self.knn_page,
+            text="Predict and Score Model",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
         # Button to run model on test data and output results
         tk.Button(self.knn_page,
             text="Predict test set",
@@ -599,6 +617,30 @@ class KNNPage:
 
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
+
+        # Returns optimal hyperparameter for knn model by using cross validation
+        def hyperparam_tunning(self, data_features, data_labels):
+
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
+
+            best_score = 0
+            for n in [1, 3, 5, 7, 9, 11, 13, 15]:
+                # For each possible parameter train a knn model
+                knn = KNeighborsRegressor(n_neighbors=n)
+                # Perform cross-validation
+                scores = cross_val_score(knn, X_train, y_train, cv=5)
+                score = np.mean(scores)
+                # Store best score from cross-val of all possibilities
+                if score > best_score:
+                    best_score = score
+                    best_n = n
+            # Rebuild a model on full training set and check performance
+            knn = KNeighborsRegressor(n_neighbors=best_n)
+            knn.fit(X_train, y_train)
+            test_score = knn.score(X_test, y_test)
+            print("best CV score:", best_score)
+            print("best n value:", best_n)
+            print("test score on test set using best parameters:", test_score)
 
 def main():
     """Class representing the root window"""
