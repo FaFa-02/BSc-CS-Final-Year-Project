@@ -13,6 +13,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import Ridge
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
 import seaborn as sns
 from ridge_regression import RidgeRegression
 from k_nearest_neighbors import KNearestNeighbors
@@ -481,9 +482,9 @@ class RidgePage:
             best_score = 0
             for alpha in [1e-15, 1e-10, 1e-8, 1e-4, 1e-3,1e-2, 1, 5, 10, 100, 1000]:
                 # For each possible parameter train a ridge model
-                ridge = Ridge(alpha=alpha)
+                pipe = make_pipeline(StandardScaler(), Ridge(alpha=alpha))
                 # Perform cross-validation
-                scores = cross_val_score(ridge, X_train, y_train, cv=5)
+                scores = cross_val_score(pipe, X_train, y_train, cv=5)
                 score = np.mean(scores)
                 # Store best score from cross-val of all possibilities
                 if score > best_score:
@@ -624,11 +625,11 @@ class KNNPage:
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
 
             best_score = 0
-            for n in [1, 3, 5, 7, 9, 11, 13, 15]:
+            for n in [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]:
                 # For each possible parameter train a knn model
-                knn = KNeighborsRegressor(n_neighbors=n)
+                pipe = make_pipeline(StandardScaler(), KNeighborsRegressor(n_neighbors=n))
                 # Perform cross-validation
-                scores = cross_val_score(knn, X_train, y_train, cv=5)
+                scores = cross_val_score(pipe, X_train, y_train, cv=5)
                 score = np.mean(scores)
                 # Store best score from cross-val of all possibilities
                 if score > best_score:
