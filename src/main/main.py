@@ -357,12 +357,13 @@ class RidgePage:
     """Class representing the ridge regression model program window"""
     def __init__(self, parent):
         self.parent = parent
-        self.ridge_page = tk.Frame(self.parent, width=500, height=300, bg=BG_COLOUR)
+        self.ridge_page = tk.Frame(self.parent, width=500, height=400, bg=BG_COLOUR)
         self.ridge_page.grid(row=0, column=0)
         self.ridge_page.pack_propagate(False)
 
         # Model parameters
         self.alpha = 0
+        self.train_size = 0.75
 
         # Title for choosing dataset
         tk.Label(self.ridge_page,
@@ -377,6 +378,20 @@ class RidgePage:
         tk.Radiobutton(self.ridge_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.ridge_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
         tk.Radiobutton(self.ridge_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+
+        tk.Label(self.ridge_page,
+            text="Set ratio of training vs test size",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+
+        # Takes value from scale and updates train_size variable with it
+        def update_train_size(v):
+            self.train_size = float(v)
+
+        # Scale to define size of training set relative to test set
+        tk.Scale(self.ridge_page, from_=0.00, to=1.00, resolution=0.05, orient="horizontal", command=update_train_size).pack()
 
         tk.Label(self.ridge_page,
             text="Set Ridge Regression Parameters",
@@ -444,6 +459,8 @@ class RidgePage:
         # Takes value from text field and updates alpha variable with it
         def update_alpha(self):
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
+
+
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_ridge(self, data_features, data_labels, rnd_state, graph=True):
