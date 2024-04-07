@@ -466,7 +466,7 @@ class RidgePage:
         def predict_ridge(self, data_features, data_labels, rnd_state, graph=True):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd_state)
 
             # Apply normalisation to dataset before predicting
             std_scaler = StandardScaler()
@@ -494,7 +494,7 @@ class RidgePage:
         # Returns optimal hyperparameter for knn model by using cross validation
         def hyperparam_tunning(self, data_features, data_labels):
 
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
 
             best_score = 0
             for alpha in [1e-15, 1e-10, 1e-8, 1e-4, 1e-3,1e-2, 1, 5, 10, 100, 1000]:
@@ -519,12 +519,13 @@ class KNNPage:
     """Class representing the KNN model program window"""
     def __init__(self, parent):
         self.parent = parent
-        self.knn_page = tk.Frame(self.parent, width=500, height=300, bg=BG_COLOUR)
+        self.knn_page = tk.Frame(self.parent, width=500, height=400, bg=BG_COLOUR)
         self.knn_page.grid(row=0, column=0)
         self.knn_page.pack_propagate(False)
 
         # Model parameters
         self.n = 3
+        self.train_size = 0.75
 
         # Title for choosing dataset
         tk.Label(self.knn_page,
@@ -539,6 +540,25 @@ class KNNPage:
         tk.Radiobutton(self.knn_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.knn_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
         tk.Radiobutton(self.knn_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+
+        tk.Label(self.knn_page,
+            text="Set ratio of training vs test size",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 14)
+            ).pack()
+        
+        # Takes value from scale and updates train_size variable with it
+        def update_train_size(v):
+            self.train_size = float(v)
+
+        # Scale to define size of training set relative to test set
+        tk.Scale(self.knn_page, 
+            from_=0.00, to=1.00, 
+            resolution=0.05, 
+            orient="horizontal", 
+            command=update_train_size
+            ).pack()
 
         tk.Label(self.knn_page,
             text="Set KNN Regression Parameters",
@@ -611,7 +631,7 @@ class KNNPage:
         def predict_knn(self, data_features, data_labels, rnd_state, graph=True):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=rnd_state)
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size,random_state=rnd_state)
             
             # Apply normalisation to dataset before predicting
             std_scaler = StandardScaler()
@@ -639,7 +659,7 @@ class KNNPage:
         # Returns optimal hyperparameter for knn model by using cross validation
         def hyperparam_tunning(self, data_features, data_labels):
 
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, random_state=0)
+            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
 
             best_score = 0
             for n in [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]:
