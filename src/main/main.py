@@ -40,20 +40,19 @@ class Menu:
     student_labels = (student_data_adjusted['G3']).to_numpy()
 
     # Read crime dataset and seperate features and labels
-    crime_data = pd.read_csv("Datasets/crimedata.csv", encoding='latin-1')
+    crime_data = pd.read_csv("Datasets/crimedata.csv", encoding='latin-1', na_values=["?"])
     # Drop information only columns and other target variables
     crime_data = crime_data.drop(crime_data.columns[list(range(0,5)) + list(range(129, 145)) + [146]], axis=1)
-    crime_data = crime_data.replace('?', np.NaN)
     # Remove police entries
     crime_data_adjusted = crime_data.drop(crime_data.columns[list(range(98, 115)) + list(range(118, 124))], axis=1)
-    # Remove rows with null target variable
-    crime_data_adjusted = crime_data_adjusted[crime_data.ViolentCrimesPerPop != '?']
+    # Remove rows with null variables
+    crime_data_adjusted = crime_data_adjusted.dropna(axis=0)
     crime_features = (crime_data_adjusted.drop('ViolentCrimesPerPop', axis=1)).to_numpy()
     crime_labels = (crime_data_adjusted['ViolentCrimesPerPop']).to_numpy()
 
     data_list = [[boston_data, boston_data_adjusted, boston_features, boston_labels],
                  [student_data, student_data_adjusted, student_features, student_labels],
-                 [crime_data, crime_data, crime_features, crime_labels]]
+                 [crime_data, crime_data_adjusted, crime_features, crime_labels]]
 
     pd.set_option('display.max_colwidth', None)
     pd.set_option('display.max_columns', None)
