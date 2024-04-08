@@ -14,7 +14,6 @@ from sklearn.linear_model import Ridge
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-import seaborn as sns
 from ridge_regression import RidgeRegression
 from k_nearest_neighbors import KNearestNeighbors
 
@@ -160,7 +159,7 @@ class DataVisPage():
         # Radio buttons for choosing dataset
         tk.Radiobutton(self.data_vis_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.data_vis_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
-        tk.Radiobutton(self.data_vis_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+        tk.Radiobutton(self.data_vis_page, text='Crime Dataset', variable=var, value=2).pack(anchor=tk.W)
 
         # Title for data vis options
         tk.Label(self.data_vis_page,
@@ -190,7 +189,7 @@ class DataVisPage():
                 command=lambda:corr_matrix(self, (Menu.data_list)[var.get()][1])
                 ).pack()
 
-        # Button that displays data visualisation for selected dataset when pressed
+        # Button that displays eigenvalues for selected dataset when pressed
         tk.Button(self.data_vis_page,
                 text="Eignvaleus & Condition Indices",
                 font=("TkMenuFont", 14),
@@ -218,12 +217,7 @@ class DataVisPage():
                 feature_set.T[i] = col - col.mean()
             XTX = np.matmul(np.transpose(feature_set), feature_set)
             cov_m = XTX / (feature_set.shape[0] - 1)
-            eigenvals = np.sqrt(np.linalg.eigvals(cov_m))
-
-            #feature_set_std = StandardScaler().fit_transform(feature_set)
-
-            #covariance_matrix = np.cov(np.transpose(feature_set_std))
-            #eigenvals = np.linalg.eigvals(covariance_matrix)
+            eigenvals = np.sqrt(np.linalg.eigvalsh(cov_m))
 
             return np.round(eigenvals, decimals=4)
 
@@ -349,7 +343,7 @@ class Poc:
 
         # Instantiates and trains model to dataset, then executes on test set and output results
         def predict_poc(self, a):
-            ridge = RidgeRegressionClassifier(a)
+            ridge = RidgeRegression(a)
             ridge.fit(X_train, y_train)
 
             y_hat = ridge.predict(X_test)
@@ -379,7 +373,7 @@ class RidgePage:
         var = tk.IntVar()
         tk.Radiobutton(self.ridge_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.ridge_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
-        tk.Radiobutton(self.ridge_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+        tk.Radiobutton(self.ridge_page, text='Crime Dataset', variable=var, value=2).pack(anchor=tk.W)
 
         tk.Label(self.ridge_page,
             text="Set ratio of training vs test size",
@@ -541,7 +535,7 @@ class KNNPage:
         var = tk.IntVar()
         tk.Radiobutton(self.knn_page, text='Boston Housing Dataset', variable=var, value=0).pack(anchor=tk.W)
         tk.Radiobutton(self.knn_page, text='Student Dataset', variable=var, value=1).pack(anchor=tk.W)
-        tk.Radiobutton(self.knn_page, text='Million Song Dataset', variable=var, value=2).pack(anchor=tk.W)
+        tk.Radiobutton(self.knn_page, text='Crime Dataset', variable=var, value=2).pack(anchor=tk.W)
 
         tk.Label(self.knn_page,
             text="Set ratio of training vs test size",
