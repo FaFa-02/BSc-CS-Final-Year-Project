@@ -179,6 +179,15 @@ class DataVisPage():
                 command=lambda:data_describe(self, (Menu.data_list)[var.get()][0])
                 ).pack()
 
+        # Toggle to show or not values in correlation matrix
+        var2 = tk.BooleanVar()
+        tk.Checkbutton(self.data_vis_page, 
+                text='Display Correlation Values', 
+                variable=var2, 
+                onvalue=True, 
+                offvalue=False
+                ).pack()
+
         # Button that displays correlation matrix for selected dataset when pressed
         tk.Button(self.data_vis_page,
                 text="Correlation Matrix",
@@ -186,7 +195,7 @@ class DataVisPage():
                 bg=BG_COLOUR,
                 fg="black",
                 cursor="hand2",
-                command=lambda:corr_matrix(self, (Menu.data_list)[var.get()][1])
+                command=lambda:corr_matrix(self, (Menu.data_list)[var.get()][1], var2.get())
                 ).pack()
 
         # Button that displays eigenvalues for selected dataset when pressed
@@ -203,10 +212,13 @@ class DataVisPage():
             with open("output.txt", "w") as text_file:
                 text_file.write(dataset.describe(include='all').to_string())
 
-        def corr_matrix(self, dataset):
+        def corr_matrix(self, dataset, display_vals):
+            print(display_vals)
             plt.figure(figsize=(20, 10))
-            sns.heatmap(dataset.corr().abs(),  annot=True)
-            print(dataset.shape)
+            if display_vals == True:
+                sns.heatmap(dataset.corr().abs(),  annot=True)
+            else:
+                sns.heatmap(dataset.corr().abs())
             plt.show()
 
         # Computes eigenvalues of a given dataset
