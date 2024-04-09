@@ -213,10 +213,10 @@ class DataVisPage():
                 text_file.write(dataset.describe(include='all').to_string())
 
         def corr_matrix(self, dataset, display_vals):
-            print(display_vals)
+            sns.set(font_scale=2)
             plt.figure(figsize=(20, 10))
             if display_vals == True:
-                sns.heatmap(dataset.corr().abs(),  annot=True)
+                sns.heatmap(dataset.corr().abs(),  annot=True, fmt=".2f")
             else:
                 sns.heatmap(dataset.corr().abs())
             plt.show()
