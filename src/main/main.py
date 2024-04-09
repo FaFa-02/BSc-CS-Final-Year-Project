@@ -231,14 +231,21 @@ class DataVisPage():
             cov_m = XTX / (feature_set.shape[0] - 1)
             eigenvals = np.sqrt(np.linalg.eigvalsh(cov_m))
 
-            return np.round(eigenvals, decimals=4)
+            # Sort eigenvalues with largest first
+            sorted_eigenvals = np.sort(eigenvals)
+            
+            return np.round(eigenvals[::-1], decimals=4)
 
         # Computes condition indicies of a dataset given its eigenvalues
         def comp_ci(eigenvals):
-            ci = np.arange(1,eigenvals.size+1)
+            ci = []
 
             for i in range(eigenvals.size):
-                ci[i] = np.sqrt(np.max(eigenvals) / eigenvals[i])
+                # Check for zero and negative eigenvals
+                if eigenvals[i] > 0:
+                    ci.append(np.round(np.sqrt(np.max(eigenvals) / eigenvals[i])))
+                else:
+                    ci.append("N/A")
 
             return ci
 
