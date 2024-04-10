@@ -241,7 +241,7 @@ class DataVisPage():
             # Sort eigenvalues with largest first
             sorted_eigenvals = np.sort(eigenvals)
 
-            return np.round(sorted_eigenvals[::-1], decimals=4)
+            return sorted_eigenvals[::-1]
 
         # Computes condition indicies of a dataset given its eigenvalues
         def comp_ci(eigenvals):
@@ -267,8 +267,9 @@ class DataVisPage():
                 "Component": [x for x in range(1, eignvals.size+1)],
                 "Eigenvalues": eignvals,
                 "Condition Indicies": ci
-            })
-
+            }) 
+            vis_df['Eigenvalues'] = vis_df['Eigenvalues'].apply(lambda x: '{:.2e}'.format(x))
+            
             # Plot eigenvalues against their indexes
             np.arange(1,eignvals.size)
             plt.plot(np.arange(1,eignvals.size+1), eignvals, '-o')
