@@ -216,7 +216,9 @@ class DataVisPage():
             sns.set(font_scale=2)
             plt.figure(figsize=(20, 10))
             if display_vals == True:
-                sns.heatmap(dataset.corr().abs(),  annot=True, fmt=".2f")
+                corr = dataset.corr().abs()
+                mask_corr = corr[(corr >= 0.70) | (corr <= -0.70)]
+                sns.heatmap(mask_corr,  annot=True, fmt=".2f")
             else:
                 sns.heatmap(dataset.corr().abs())
             plt.show()
@@ -229,12 +231,17 @@ class DataVisPage():
                 feature_set.T[i] = col - col.mean()
             XTX = np.matmul(np.transpose(feature_set), feature_set)
             cov_m = XTX / (feature_set.shape[0] - 1)
-            eigenvals = np.sqrt(np.linalg.eigvalsh(cov_m))
+
+            # Compute eigenvals and square them if positive
+            eigenvals = np.linalg.eigvalsh(cov_m)
+            for i in range(eigenvals.shape[0]):
+                if eigenvals[i] >= 0:
+                    eigenvals[i] = np.sqrt(eigenvals[i])
 
             # Sort eigenvalues with largest first
             sorted_eigenvals = np.sort(eigenvals)
-            
-            return np.round(eigenvals[::-1], decimals=4)
+
+            return np.round(sorted_eigenvals[::-1], decimals=4)
 
         # Computes condition indicies of a dataset given its eigenvalues
         def comp_ci(eigenvals):
