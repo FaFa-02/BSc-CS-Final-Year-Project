@@ -546,7 +546,7 @@ class RidgePage:
                 X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd)
 
             best_score = 0
-            for alpha in [1e-3, 1e-2, 1e-1, 1, 5, 10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 1000]:
+            for alpha in [1e-3, 1e-2, 1e-1, 1, 3, 5, 8, 10, 15, 20, 30, 40, 60, 80, 100, 125, 150, 175, 200, 225, 250, 275, 300, 350, 400, 450, 500, 600, 700, 1000]:
                 # For each possible parameter train a ridge model
                 pipe = make_pipeline(StandardScaler(), Ridge(alpha=alpha))
                 # Perform cross-validation
