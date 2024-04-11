@@ -479,6 +479,22 @@ class RidgePage:
             command=lambda:predict_ridge_errors(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3])
             ).pack()
 
+        output_score = tk.Label(self.ridge_page,
+            text="",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 10)
+            )
+        output_score.pack()
+
+        output_std = tk.Label(self.ridge_page,
+            text="",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 10)
+            )
+        output_std.pack()
+
         # Takes value from text field and updates alpha variable with it
         def update_alpha(self):
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
@@ -514,6 +530,9 @@ class RidgePage:
             for i in RAND_STATES:
                 alpha = hyperparam_tunning(self, data_features, data_labels, i)
                 acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None, opt_alpha=alpha))
+
+            output_score.config(text="mean score: " + str(np.mean(acc_scores_arr)))
+            output_std.config(text="std error: " + str( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
@@ -655,6 +674,22 @@ class KNNPage:
             command=lambda:predict_knn_errors(self, (Menu.data_list)[var.get()][2], (Menu.data_list)[var.get()][3])
             ).pack()
 
+        output_score = tk.Label(self.knn_page,
+            text="",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 10)
+            )
+        output_score.pack()
+
+        output_std = tk.Label(self.knn_page,
+            text="",
+            bg=BG_COLOUR,
+            fg="black",
+            font=("TkMenuFont", 10)
+            )
+        output_std.pack()
+
         # Takes value from text field and updates n variable with it
         def update_n(self):
             self.n = int(n_input.get("1.0", "end-1c"))
@@ -688,7 +723,10 @@ class KNNPage:
             for i in RAND_STATES:
                 n = hyperparam_tunning(self, data_features, data_labels, i)
                 acc_scores_arr.append(predict_knn(self, data_features, data_labels, i, None, opt_n=n))
-
+            
+            output_score.config(text="mean score: " + str(np.mean(acc_scores_arr)))
+            output_std.config(text="std error: " + str( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
+            
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
@@ -718,6 +756,8 @@ class KNNPage:
             print("best CV score:", best_score)
             print("best n value:", best_n)
             print("test score on test set using best parameters:", test_score)
+
+            return best_n
 
 def main():
     """Class representing the root window"""
