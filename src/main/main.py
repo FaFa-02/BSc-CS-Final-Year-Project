@@ -520,14 +520,14 @@ class RidgePage:
 
         # Returns optimal hyperparameter for knn model by using cross validation
         def hyperparam_tunning(self, data_features, data_labels, rnd=None):
-            print("rnd:",rnd)
+
             if rnd is None:
                 X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
             else:
                 X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd)
 
             best_score = 0
-            for alpha in [1e-3, 1e-2, 1e-1, 1, 5, 10, 50, 100, 150, 200, 300, 400, 500, 750, 1000]:
+            for alpha in [1e-3, 1e-2, 1e-1, 1, 5, 10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 1000]:
                 # For each possible parameter train a ridge model
                 pipe = make_pipeline(StandardScaler(), Ridge(alpha=alpha))
                 # Perform cross-validation
@@ -660,7 +660,7 @@ class KNNPage:
             self.n = int(n_input.get("1.0", "end-1c"))
 
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_knn(self, data_features, data_labels, rnd_state, graph=True):
+        def predict_knn(self, data_features, data_labels, rnd_state, graph=True, opt_n=None):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size,random_state=rnd_state)
@@ -672,7 +672,10 @@ class KNNPage:
             X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to KNN Regression model
-            knn = KNearestNeighbors(self.n)
+            if opt_n is None:
+                knn = KNearestNeighbors(self.n)
+            else:
+                knn = KNearestNeighbors(opt_n)
             knn.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
@@ -683,15 +686,19 @@ class KNNPage:
             acc_scores_arr = []
 
             for i in RAND_STATES:
-                acc_scores_arr.append(predict_knn(self, data_features, data_labels, i, None))
+                n = hyperparam_tunning(self, data_features, data_labels, i)
+                acc_scores_arr.append(predict_knn(self, data_features, data_labels, i, None, opt_n=n))
 
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
         # Returns optimal hyperparameter for knn model by using cross validation
-        def hyperparam_tunning(self, data_features, data_labels):
+        def hyperparam_tunning(self, data_features, data_labels, rnd=None):
 
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
+            if rnd is None:
+                X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
+            else:
+                X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd)
 
             best_score = 0
             for n in [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]:
