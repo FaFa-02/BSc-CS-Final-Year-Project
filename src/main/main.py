@@ -483,10 +483,8 @@ class RidgePage:
         def update_alpha(self):
             self.alpha = float(alpha_input.get("1.0", "end-1c"))
 
-
-
         # Instantiates and trains model to dataset, then executes on test set and output results
-        def predict_ridge(self, data_features, data_labels, rnd_state, graph=True):
+        def predict_ridge(self, data_features, data_labels, rnd_state, graph=True, opt_alpha=None):
 
             # Split dataset into training and test sets in preparation for the Ridge Regression model
             X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd_state)
@@ -498,7 +496,11 @@ class RidgePage:
             X_test_scaled = std_scaler.transform(X_test)
 
             # Initialized and fit training data to Ridge Regression model
-            ridge = RidgeRegression(self.alpha)
+            if opt_alpha is None:
+                ridge = RidgeRegression(self.alpha)
+            else:
+                ridge = RidgeRegression(opt_alpha)
+            
             ridge.fit(X_train_scaled, y_train)
 
             # Predict values and output their score and plot predicted vs true points
@@ -508,19 +510,24 @@ class RidgePage:
         def predict_ridge_errors(self, data_features, data_labels):
             acc_scores_arr = []
 
+            # Find optimal alpha, build and score model with random states
             for i in RAND_STATES:
-                acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None))
+                alpha = hyperparam_tunning(self, data_features, data_labels, i)
+                acc_scores_arr.append(predict_ridge(self, data_features, data_labels, i, None, opt_alpha=alpha))
 
             print("mean score:",np.mean(acc_scores_arr))
             print("std error:",( np.std(acc_scores_arr) / np.sqrt(len(acc_scores_arr))))
 
         # Returns optimal hyperparameter for knn model by using cross validation
-        def hyperparam_tunning(self, data_features, data_labels):
-
-            X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
+        def hyperparam_tunning(self, data_features, data_labels, rnd=None):
+            print("rnd:",rnd)
+            if rnd is None:
+                X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=0)
+            else:
+                X_train, X_test, y_train, y_test = train_test_split(data_features, data_labels, train_size=self.train_size, random_state=rnd)
 
             best_score = 0
-            for alpha in [1e-15, 1e-10, 1e-8, 1e-4, 1e-3,1e-2, 1, 5, 10, 100, 1000]:
+            for alpha in [1e-3, 1e-2, 1e-1, 1, 5, 10, 50, 100, 150, 200, 300, 400, 500, 750, 1000]:
                 # For each possible parameter train a ridge model
                 pipe = make_pipeline(StandardScaler(), Ridge(alpha=alpha))
                 # Perform cross-validation
@@ -537,6 +544,8 @@ class RidgePage:
             print("best CV score:", best_score)
             print("best alpha value:", best_alpha)
             print("test score on test set using best parameters:", test_score)
+
+            return best_alpha
 
 class KNNPage:
     """Class representing the KNN model program window"""
